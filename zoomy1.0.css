@@ -1,0 +1,94 @@
+
+
+
+.zoomy{
+    position: absolute;
+    display: none;
+    background-repeat: no-repeat;
+    -webkit-box-shadow: 0px 5px 10px #000;
+    -moz-box-shadow: 0px 5px 10px #000;
+    border: 1px solid #999;
+    line-height: 100px;
+    text-align: center;
+    background-image: url(loading.gif);
+    background-position: center;
+    background-color: #fff;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.zoomy span{
+    display: block;
+    margin: 5px auto;
+    background: -moz-linear-gradient(top, rgba(255,255,255,.61) 0%, rgba(255,255,255,0) 24%, rgba(255,255,255,0) 71%, rgba(255,255,255,.61) 100%); /* firefox */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,.61)), color-stop(24%,rgba(255,255,255,0)), color-stop(71%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,.61))); /* webkit */
+
+}
+
+.zoomBar{
+    font-family: arial, helvetica;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background: #000;
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+    border-color: #000000;
+    padding: 5px 10px;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+    opacity: .8;
+    filter:alpha(opacity=80);
+}
+
+.zoomBar span{
+    font-weight: bolder;
+    color: #ccc;
+}
+
+
+.zoomy img{
+    margin-top: -10000px;
+    margin-right: -1000px;
+    opacity: 0;
+    filter:alpha(opacity=0);
+}
+.zoomy a{
+    color: #333;
+    text-decoration: none;
+}
+
+.cursorHide{
+    cursor: url(blank.gif), move;
+}
+
+.broke a{
+    display: block;
+    height: 100%;
+    width: 100%;
+    
+}
+
+#brokeZoomy{
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 0px;
+    left: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    background: #fff url(broke.gif) center no-repeat;
+}
+
+
+
+a, a img{
+    outline: none;
+    text-decoration: none;
+    border: 0;
+}
+
