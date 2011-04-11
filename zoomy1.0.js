@@ -35,8 +35,8 @@ var ZoomyState = [];
 	// add Zoomy
 	var addZoomy = function(ele, i) {
 	    ZoomyState.push(0);
-	    var image = ele.attr('href'), 
-	    cursor = function(){
+	    var image = ele.attr('href'),
+	     cursor = function(){
 		if($.browser.mozilla){
 		    return '-moz-zoom-in';
 		}else if($.browser.webkit){
@@ -44,8 +44,9 @@ var ZoomyState = [];
 		}else{
 		    return 'cell';
 		}
-	    };
-	    //set offset and size on add zoomy, zoom size on img load, and stops on startZoom
+	    },
+	    zoom;
+    
 	    ele.css({'position': 'relative', 'cursor': cursor}).append('<div class="zoomy" rel="'+i+'"><img/></div>');
 	    zoom = ele.find('.zoomy[rel='+i+']');
 	    zoomParams(ele, zoom);
@@ -365,4 +366,4 @@ var ZoomyState = [];
     };
     
     
-}(jQuery))
+}(jQuery));
