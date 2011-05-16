@@ -1,5 +1,5 @@
 /*
- *  	Zoomy 1.1 - jQuery plugin
+ *  	Zoomy 1.2 - jQuery plugin
 
  *	http://redeyeops.com/plugins/zoomy
  *
@@ -50,9 +50,31 @@ var ZoomyState = [];
 	    },
 	    zoom;
     
-	    ele.css({'position': 'relative', 'cursor': cursor}).append('<div class="zoomy zoom-obj-'+i+'" rel="'+i+'"><img/></div>');
+	    ele.css({'position': 'relative', 'cursor': cursor}).append('<div class="zoomy zoom-obj-'+i+'" rel="'+i+'"><img id="tmp"/></div>');
 	    zoom = $('.zoom-obj-'+i);
 	    zoomParams(ele, zoom);
+	    
+	    ele.bind('click', function(){
+		if(ZoomyState[i] === 0){
+		    zoom.css({opacity: 1}).addClass('cursorHide').show();
+		    ZoomyState[i] = 1;
+		    zoomBarLeave(ele, zoom);
+
+		    loadImage(ele, image, zoom);
+
+			setTimeout(function () {
+			    if (!zoom.find('img').length) {
+				zoomEnter(ele, zoom, image);
+			    }
+			}, 150);
+		}else{
+		    zoom.css({opacity: 0}).removeClass('cursorHide');
+		    ZoomyState[i] = 0;
+		}
+		toggleClasses(ele);
+		return false;
+	    });
+	    
 	    
 	    ele.hover(function () {
 
@@ -70,38 +92,20 @@ var ZoomyState = [];
 		    zoomLeave(ele, zoom);
 		}
 
-	    }).click(function(e){
-		if(ZoomyState[i] === 0){
-		    zoom.css({opacity: 1}).addClass('cursorHide').show();
-		    ZoomyState[i] = 1;
-		    zoomBarLeave(ele, zoom);
-
-		    loadImage(ele, image, zoom);
-
-			setTimeout(function () {
-			    if (!zoom.find('img').length) {
-				zoomEnter(ele, zoom, image);
-			    }
-			}, 150);
-		}else{
-		    zoom.css({opacity: 0}).removeClass('cursorHide');
-		    ZoomyState[i] = 0;
-		}
-		toggleOpacity(ele);
-		return false;
 	    });
 	},
 
 	zoomBarEnter = function(ele){
-	    if(ele.find('.zoomBar').length ===0){
+	    var zb = ele.find('.zoomBar');
+	    if(zb.length ===0){
 		ele.append('<span class="zoomBar">'+options.zoomText+'</span>');
 	    }else{
-		ele.find('.zoomBar').slideDown(200);
+		zb.html(options.zoomText);
 	    }
 	},
 
 	zoomBarLeave = function(ele){
-		ele.find('.zoomBar').slideUp(200);
+		ele.find('.zoombar').html(options.zoomText);
 	},
 
 	zoomEnter = function(ele, zoom, image){
@@ -119,15 +123,15 @@ var ZoomyState = [];
 			//resetZoom(ele, zoom);
 			startZoom(ele, zoom);
 		    }
-		    toggleOpacity(ele);
+		    toggleClasses(ele);
 		}
 	},
-	toggleOpacity = function(ele){
+	toggleClasses = function(ele){
 	    var img = ele.find('img');
 	    if(ZoomyState[ele.find('.zoomy').attr('rel')] === 0){
-		img.css({opacity:1});
+		ele.removeClass('inactive');
 	    }else{
-		img.css({opacity:0.9});
+		ele.addClass('inactive');
 	    }
 	},
 
@@ -140,6 +144,7 @@ var ZoomyState = [];
 	},
 
 	// Start Zoom
+	//includes mouse move event
 	startZoom = function(ele, zoom) {
 	    var ratio = function(x, y){
 		var z = x/y;
@@ -171,7 +176,7 @@ var ZoomyState = [];
 		var p = Math.round((x - y) / z)-halfSize;
 		return p;
 	    },
-	    cssCreate = function(a,b,c,d,e,f){
+	    cdCreate = function(a,b,c,d,e,f){
 		var bgPos = a+b+'px '+c+d+'px',
 		o = {
 		    backgroundPosition: bgPos,
@@ -179,7 +184,9 @@ var ZoomyState = [];
 		    top: f
 		};
 		return o;
-	    }
+	    };
+	    	    
+	    // mouse move event
 	    
 	    ele.mousemove(function (e) {
 
@@ -188,27 +195,36 @@ var ZoomyState = [];
 		    posY = mousePos(e.pageY,l.top),
 		    leftX = zoomPos(e.pageX,l.left,ratioX),
 		    topY = zoomPos(e.pageY,l.top,ratioY),
-		    cssArrOfObj = [
-			cssCreate('-', leftX,'-',topY,posX,posY),
-			cssCreate('',0,'-',topY,-stop,posY),
-			cssCreate('',0,'',0,-stop,-stop),
-			cssCreate('',0,'-',zoomY,-stop,bottomStop),
-			cssCreate('-',leftX,'',0,posX,-stop),
-			cssCreate('-',zoomX,'',0,rightStop,-stop),
-			cssCreate('-',zoomX,'-',topY,rightStop,posY),
-			cssCreate('-',zoomX,'-',zoomY,rightStop,bottomStop),
-			cssCreate('-',leftX,'-',zoomY,posX,bottomStop)
-			],	
-			a = -stop <= posX,
-			e2 = -stop > posX,
-			b = -stop <= posY,
-			f = -stop > posY,
-			d = bottomStop > posY,
-			g = bottomStop <= posY,
-			c = rightStop > posX,
-			j = rightStop <= posX,
-			cssArrIndex = ( a && b && c && d ) ? 0 : ( e2 ) ? ( b && d ) ? 1 : ( f ) ? 2 : ( g ) ? 3 : null : ( f ) ? (c) ? 4 : 5 : ( j ) ? ( d ) ? 6 : 7 : ( g ) ? 8 : null;
-			zoom.show().css( cssArrOfObj[ cssArrIndex ] || {} );
+		    arrPosb = [
+			['-', leftX,'-',topY,posX,posY],
+			['',0,'-',topY,-stop,posY],
+			['',0,'',0,-stop,-stop],
+			['',0,'-',zoomY,-stop,bottomStop],
+			['-',leftX,'',0,posX,-stop],
+			['-',zoomX,'',0,rightStop,-stop],
+			['-',zoomX,'-',topY,rightStop,posY],
+			['-',zoomX,'-',zoomY,rightStop,bottomStop],
+			['-',leftX,'-',zoomY,posX,bottomStop]
+		    ],
+		    cssArrOfObj = function(){
+			var ar = [];
+			for ( i=0; i < arrPosb.length; i++) {
+			    var ap = arrPosb[i],
+			    posb = cdCreate(ap[0],ap[1],ap[2],ap[3],ap[4],ap[5]);
+			    ar.push(posb);
+			}
+			return ar;
+		    },	
+		    a = -stop <= posX,
+		    e2 = -stop > posX,
+		    b = -stop <= posY,
+		    f = -stop > posY,
+		    d = bottomStop > posY,
+		    g = bottomStop <= posY,
+		    c = rightStop > posX,
+		    j = rightStop <= posX,
+		    cssArrIndex = ( a && b && c && d ) ? 0 : ( e2 ) ? ( b && d ) ? 1 : ( f ) ? 2 : ( g ) ? 3 : null : ( f ) ? (c) ? 4 : 5 : ( j ) ? ( d ) ? 6 : 7 : ( g ) ? 8 : null;
+		    zoom.show().css( cssArrOfObj()[ cssArrIndex ] || {} );
 		}
 	    });
 	},
@@ -222,6 +238,7 @@ var ZoomyState = [];
     
 	    if (zoom.find('img').attr('src') !== image) {
 		zoom.find('img').attr('src', image).load(function () {
+		    
 		    ele.attr({
 			'x': zoom.find('img').width(),
 			'y': zoom.find('img').height()
@@ -267,7 +284,8 @@ var ZoomyState = [];
 			    if(inline){
 				var inCSS = inline.split(';');
 				for(i = 0; i<= inCSS.length; i++){
-				    var style = inCSS[i].split(':');
+				    if(inCSS[i]) var style = inCSS[i].split(':');
+				    else var style = [0,0];
 				    if(style[0]==='float'){
 					return(style[1]);
 				    }
@@ -288,8 +306,8 @@ var ZoomyState = [];
 			    return 'unknown';
 			}
 		    }
-	    };
-    
+	    }
+	    
 	    zoom.css({
 		height: options.zoomSize,
 		width: options.zoomSize
