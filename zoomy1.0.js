@@ -238,7 +238,6 @@ var ZoomyState = [];
 		zS = options.zoomSize / 2;
     
 	    if (zoom.find('img').attr('src') !== image) {
-		alert('load init');
 		zoom.find('img').attr('src', image).load(function(){
 		    
 		    ele.attr({
