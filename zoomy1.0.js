@@ -231,13 +231,15 @@ var ZoomyState = [];
 	
 	
 	// Load Zoom Image
+	
 	loadImage = function(ele, image, zoom) {
 	    var y = ele.children('img').height(),
 		x = ele.children('img').width(),
 		zS = options.zoomSize / 2;
     
 	    if (zoom.find('img').attr('src') !== image) {
-		zoom.find('img').attr('src', image).load(function () {
+		alert('load init');
+		zoom.find('img').attr('src', image).load(function(){
 		    
 		    ele.attr({
 			'x': zoom.find('img').width(),
@@ -255,7 +257,12 @@ var ZoomyState = [];
 			    'background-image': 'url(' + image + ')'
 			});
 		    }
-		});
+		}).each(function(){
+		if(this.complete || (jQuery.browser.msie && parseInt(jQuery.browser.version, 10) === 6)){
+		    $(this).trigger("load");
+		}
+	    });
+
 	    }
 	},
 
