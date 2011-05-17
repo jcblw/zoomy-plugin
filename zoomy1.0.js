@@ -53,14 +53,16 @@ var ZoomyState = [];
 	    ele.css({'position': 'relative', 'cursor': cursor}).append('<div class="zoomy zoom-obj-'+i+'" rel="'+i+'"><img id="tmp"/></div>');
 	    zoom = $('.zoom-obj-'+i);
 	    zoomParams(ele, zoom);
+	    // load zoom image after params are set
+	    loadImage(ele, image, zoom);
 	    
 	    ele.bind('click', function(){
 		if(ZoomyState[i] === 0){
 		    zoom.css({opacity: 1}).addClass('cursorHide').show();
 		    ZoomyState[i] = 1;
 		    zoomBarLeave(ele, zoom);
-
-		    loadImage(ele, image, zoom);
+			
+		    
 
 			setTimeout(function () {
 			    if (!zoom.find('img').length) {
@@ -111,18 +113,10 @@ var ZoomyState = [];
 	zoomEnter = function(ele, zoom, image){
 	    var isIdBrokeZoomy = (zoom.attr('id') === 'brokeZoomy');
 		if ( !isIdBrokeZoomy ) {
-		    if (zoom.find('img').length) {
-			loadImage(ele, image, zoom);
-			setTimeout(function () {
-			    if (!zoom.find('img').length) {
-				//resetZoom(ele, zoom);
-				startZoom(ele, zoom);
-			    }
-			}, 150);
-		    } else {
-			//resetZoom(ele, zoom);
-			startZoom(ele, zoom);
-		    }
+		    
+		    //resetZoom(ele, zoom);
+		    startZoom(ele, zoom);
+
 		    toggleClasses(ele);
 		}
 	},
@@ -236,6 +230,8 @@ var ZoomyState = [];
 	    var y = ele.children('img').height(),
 		x = ele.children('img').width(),
 		zS = options.zoomSize / 2;
+		//Move the Zoomy out of the screen view while loading img
+		zoom.show('').css({top:'-999999px',left:'-999999px'});
     
 	    if (zoom.find('img').attr('src') !== image) {
 		zoom.find('img').attr('src', image).load(function(){
