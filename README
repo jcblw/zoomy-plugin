@@ -1,4 +1,20 @@
 Zoomy 'Zoom' jQuery Plugin
 -------------------------------------------------------------
+Contributors
 
-finally up ^_^
+.Jacob Lowe (jacob@redeyeops.com)
+.Larry Battle (blarry@bateru.com)
+
+
+--------------------------------------------------------------
+Zoomy can make life easier on the eyes. ^_^
+
+New Features
+------------
+Zoomy recent release has a new feature which enables the Zoom image Thumbnail to be a actually downsized copy of the full-sized image. Also the Zoom Image is now preloaded before Zoomy is initiated.
+
+Upcoming Features
+-----------------
+We are currently in the process of adding a event handler so that the developer is allowed to define a event in which the zoomy will initiate.
+
+Suggest Features @ http://redeyeoperations.com/plugins/zoomy
