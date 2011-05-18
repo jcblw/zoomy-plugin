@@ -21,18 +21,24 @@
 var ZoomyState = [];
 
 
-    jQuery.fn.zoomy = function (options) {
+    jQuery.fn.zoomy = function(event, options) {
 
 	//defaults
 	var defaults = {
 	    zoomSize: 200,
 	    round: true,
 	    glare: true,
-	    zoomText: 'click to <span>zoom</span> in'
-	};
-    
+	    zoomText: 'default',
+	    clickable: false
+	}, defaultEvent = 'click';
+	
+	if(typeof(event) === 'object' && options === undefined){
+	    options = event;
+	    event = defaultEvent;
+	}else if(event === undefined){
+	    event = defaultEvent;
+	}
 	options = $.extend(defaults, options);
-
     
 	// add Zoomy
 	
@@ -47,36 +53,77 @@ var ZoomyState = [];
 		}else{
 		    return 'cell';
 		}
-	    },
-	    zoom;
+	    };
+	    
+
     
 	    ele.css({'position': 'relative', 'cursor': cursor}).append('<div class="zoomy zoom-obj-'+i+'" rel="'+i+'"><img id="tmp"/></div>');
-	    zoom = $('.zoom-obj-'+i);
+	    var zoom = $('.zoom-obj-'+i);
 	    zoomParams(ele, zoom);
 	    // load zoom image after params are set
 	    loadImage(ele, image, zoom);
 	    
-	    ele.bind('click', function(){
-		if(ZoomyState[i] === 0){
-		    zoom.css({opacity: 1}).addClass('cursorHide').show();
-		    ZoomyState[i] = 1;
-		    zoomBarLeave(ele, zoom);
-			
-		    
-
-			setTimeout(function () {
-			    if (!zoom.find('img').length) {
-				zoomEnter(ele, zoom, image);
-			    }
-			}, 150);
-		}else{
-		    zoom.css({opacity: 0}).removeClass('cursorHide');
-		    ZoomyState[i] = 0;
+	    var eventHandler = function(){
+		var zoomDefaultText = function(x){
+		    if(options.zoomText === defaults.zoomText){
+			    options.zoomText = x;
+		    };
+		    return true;
+		},
+		clickablity = function(){
+		    if(!options.clickable){
+			    ele.bind('click',function(){return false;});
+		    }
+		};
+		switch(event){
+		    case 'dblclick' :
+			clickablity();
+			zoomDefaultText('Double click to Zoom in');
+			break;
+		    case 'mouseover' || 'mouseenter' :
+			clickablity();
+			zoomDefaultText('Mouse over to Zoom in');
+			zoomBarEnter(ele);
+			break;
+		    default:
+			clickablity();
+			zoomDefaultText('Click to Zoom in');
+			break;
 		}
-		toggleClasses(ele);
-		return false;
-	    });
+		//case with event to initiate the zoom
+		//support for Xmouseover, Xmouseenter Xclick, Xdoubleclick,
+		ele.bind(event, function(){
+		    if(ZoomyState[i] === 0){
+			zoom.css({opacity: 1}).addClass('cursorHide').show();
+			ZoomyState[i] = 1;
+			zoomBarLeave(ele, zoom);
+			    
+			
+    
+			    setTimeout(function () {
+				if (!zoom.find('img').length) {
+				    zoomEnter(ele, zoom, image);
+				}
+				if(event === 'mouseover' || event === 'mouseenter'){
+				    ele.unbind(event);
+				}
+				
+				
+			    }, 150);
+		    }else{
+			zoom.css({opacity: 0}).removeClass('cursorHide');
+			ZoomyState[i] = 0;
+		    }
+		    toggleClasses(ele);
+		    return false;
+		});
+		
+		
+	    }
 	    
+	    eventHandler();
+	    
+	    //TODO Fix issue with mouse over and mouse enter conflict with this hover statment
 	    
 	    ele.hover(function () {
 
@@ -179,7 +226,7 @@ var ZoomyState = [];
 		};
 		return o;
 	    };
-	    	    
+	    
 	    // mouse move event
 	    
 	    ele.mousemove(function (e) {
