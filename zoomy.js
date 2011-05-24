@@ -90,8 +90,7 @@ var ZoomyState = [];
 			zoomDefaultText('Click to Zoom in');
 			break;
 		}
-		//case with event to initiate the zoom
-		//support for Xmouseover, Xmouseenter Xclick, Xdoubleclick,
+		// Bind Event
 		ele.bind(event, function(){
 		    if(ZoomyState[i] === 0){
 			zoom.css({opacity: 1}).addClass('cursorHide').show();
