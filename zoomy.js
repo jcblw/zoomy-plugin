@@ -29,7 +29,8 @@ var ZoomyState = [];
 	    round: true,
 	    glare: true,
 	    zoomText: 'default',
-	    clickable: false
+	    clickable: false,
+	    attr: 'href'
 	}, defaultEvent = 'click';
 	
 	if(typeof(event) === 'object' && options === undefined){
@@ -38,14 +39,25 @@ var ZoomyState = [];
 	}else if(event === undefined){
 	    event = defaultEvent;
 	}
+	
 	options = $.extend(defaults, options);
     
 	// add Zoomy
 	
 	var addZoomy = function(ele, i) {
 	    ZoomyState.push(0);
-	    var image = ele.attr('href'),
-	     cursor = function(){
+	    
+	    // adds functionality with ability to zoom in and also link to another page
+	    
+	    var attribute = function(){
+		if(typeof(ele.attr(options.attr)) === 'string' && options.attr !== 'href'){
+		    return ele.attr(options.attr);
+		}else{
+		    return ele.attr('href');
+		}
+	    },
+	    image = attribute(),
+	    cursor = function(){
 		if($.browser.mozilla){
 		    return '-moz-zoom-in';
 		}else if($.browser.webkit){
@@ -54,9 +66,7 @@ var ZoomyState = [];
 		    return 'cell';
 		}
 	    };
-	    
-
-    
+	        
 	    ele.css({'position': 'relative', 'cursor': cursor}).append('<div class="zoomy zoom-obj-'+i+'" rel="'+i+'"><img id="tmp"/></div>');
 	    var zoom = $('.zoom-obj-'+i);
 	    zoomParams(ele, zoom);
@@ -90,29 +100,30 @@ var ZoomyState = [];
 			zoomDefaultText('Click to Zoom in');
 			break;
 		}
-		// Bind Event
+		//case with event to initiate the zoom
+		//support for mouseover, mouseenter click, doubleclick,
 		ele.bind(event, function(){
 		    if(ZoomyState[i] === 0){
 			zoom.css({opacity: 1}).addClass('cursorHide').show();
 			ZoomyState[i] = 1;
 			zoomBarLeave(ele, zoom);
-			    
-			
-    
+                        
 			    setTimeout(function () {
 				if (!zoom.find('img').length) {
 				    zoomEnter(ele, zoom, image);
 				}
-				if(event === 'mouseover' || event === 'mouseenter'){
-				    ele.unbind(event);
-				}
-				
-				
-			    }, 150);
+			    }, 100);
 		    }else{
 			zoom.css({opacity: 0}).removeClass('cursorHide');
 			ZoomyState[i] = 0;
 		    }
+                    
+                    //Unbind event mouse over to fix hover conflict issues 
+                    
+                    if(event === 'mouseover' || event === 'mouseenter'){
+			ele.unbind(event);
+		    }
+                    
 		    toggleClasses(ele);
 		    return false;
 		});
