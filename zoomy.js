@@ -155,7 +155,6 @@
 			// And Actual Call
 				    
 			    zoom.css(move || {});
-			    ele.css(ZoomyS[id].css);
 
 		    },
 		    
@@ -284,7 +283,7 @@
 					    width: img.width(),
 					    'position': 'relative'
 					
-				    }
+				    },
 				    
 				    //A lil bit of geneology o.0
 				    
