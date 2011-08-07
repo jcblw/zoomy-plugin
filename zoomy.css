@@ -1,5 +1,15 @@
 
 
+.parent-zoom img{
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 200ms;
+    -webkit-transition-timing-function: ease;
+    cursor:  cell;
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
+    border: 0;
+}
+
 
 .zoomy{
     position: absolute;
@@ -8,7 +18,7 @@
     -webkit-box-shadow: 0px 5px 10px #000;
     -moz-box-shadow: 0px 5px 10px #000;
     filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1, Color='#3333333', Positive='true');
-    border: 1px solid #999;
+    border: 0px solid #333;
     line-height: 100px;
     text-align: center;
     background-image: url(loading.gif);
@@ -16,7 +26,11 @@
     background-color: #fff;
     z-index: 1000;
     overflow: hidden;
-    cursor: move;
+    cursor: url(blank.gif), move;
+    -webkit-transition-property: border-width, border-color, opacity;
+    -webkit-transition-duration: 500ms, 1s, 500ms;
+    -webkit-transition-timing-function: ease;
+
 }
 
 .zoomy span{
@@ -28,79 +42,26 @@
     -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#55FFFFFF, endColorstr=#00ffffff);
 }
 
-.zoomBar{
-    font-family: arial, helvetica;
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    background: #000;
-    border-width: 1px 1px 0 0;
-    border-style: solid;
-    border-color: #000000;
-    padding: 5px 10px;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-    opacity: .8;
-    filter:alpha(opacity=80);
-}
-
-.zoomBar span{
-    font-weight: bolder;
-    color: #ccc;
-}
 
 .zoomy a{
     color: #333;
     text-decoration: none;
+    outline: 0;
 }
 
-.cursorHide{
-    cursor: url(blank.gif), move;
+.inactive img{
+    opacity: 0.85!important;
+    filter:alpha(opacity=85)!important;
 }
 
-.broke a{
-    display: block;
-    height: 100%;
-    width: 100%;
-    
-}
-
-#brokeZoomy{
-    display: block;
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    top: 0px;
-    left: 0px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    background: #fff url(broke.gif) center no-repeat;
-}
-
-
-
-a.zoom img{
-    position: absolute;
-    outline: none;
-    text-decoration: none;
-    border: 0;
-}
-
-a.zoom.inactive img{
-    opacity: 0.9;
-    filter:alpha(opacity=90);
-}
-
-.zoom br{
-    display: none;
-}
-
-.zoom #tmp{
+.zoomy #tmp{
     max-width: none;
     max-height: none;
     top: -999999px;
     left: -999999px;
+}
+
+.zoomy.start{
+        border-width: 2px;
+        border-color: #444;
 }
