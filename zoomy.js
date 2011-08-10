@@ -211,17 +211,22 @@
 
 					    if (options.glare) {
 						
-							zoom.html('<span/>').css({
-								'background-image': 'url(' + image + ')'
-							});
+							zoom.append('<span/>')
+								.css({
+									'background-image': 'url(' + image + ')'
+								})
+								.find('img')
+								.remove();
 							
 							setGlare(zoom);
 							
 					    } else {
 							
-							zoom.html('').css({
+							zoom.css({
 								'background-image': 'url(' + image + ')'
-							});
+							})
+							    .find('img')
+							    .remove();
 					    }
 					    
 				    }).each(function () {
