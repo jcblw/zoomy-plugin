@@ -208,10 +208,7 @@
 						    'x': zoom.find('img').width(),
 						    'y': zoom.find('img').height()
 					    };
-					    ele.attr({
-						    'x': zoom.find('img').width(),
-						    'y': zoom.find('img').height()
-					    });
+
 					    if (options.glare) {
 						
 							zoom.html('<span/>').css({
