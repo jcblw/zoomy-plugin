@@ -43,7 +43,7 @@
 				    var z = x / y;
 				    return z;
 				},
-				    id = zoom.attr('rel');
+				    id = zoom.attr('rel'),
 				    l = ele.offset(),
 				    zoomImgX = ZoomyS[id].zoom.x,
 				    zoomImgY = ZoomyS[id].zoom.y,
@@ -411,6 +411,8 @@
 								    if (ZoomyS[i].state === 0 || ZoomyS[i].state === null) {
 								       
 									    zoomStart();
+									    
+									    //Fix on click show and positioning issues
 									    
 									    startZoom(ele, zoom, e);
 									
