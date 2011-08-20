@@ -13,11 +13,17 @@
 * Code has been refactored and the logic has been corrected.
 *
 */
+
+var jQuery = jQuery || undefined;
+
+
 (function ($) {
         
-// global zoomys state, Indexed, 0 = no zoom, 1 = zoom;    
+// global zoomys state, Indexed, 0 = no zoom, 1 = zoom;
+    'use strict';
+
     var ZoomyS = {
-	count : []
+	    count : []
 	};
 
 
@@ -123,7 +129,7 @@
 					    
 					//On the Bottom    
 					
-    					    8 : [leftX, zoomY, posX, bottomStop]
+					    8 : [leftX, zoomY, posX, bottomStop]
 				    },
 				    
 				    // Test for collisions
@@ -140,13 +146,11 @@
 				    
 				    // Results
 				    
-				    cssArrIndex = (a && b && c && d) ? 0 : (e2) ? (b && d) ? 1 : (f) ? 2 : (g) ? 3 : null : (f) ? (c) ? 4 : 5 : (j) ? (d) ? 6 : 7 : (g) ? 8 : null;
+				    cssArrIndex = (a && b && c && d) ? 0 : (e2) ? (b && d) ? 1 : (f) ? 2 : (g) ? 3 : null : (f) ? (c) ? 4 : 5 : (j) ? (d) ? 6 : 7 : (g) ? 8 : null,
 				    
 				    //Create CSS object to move Zoomy
 				    
-				    ZoomyS[id].collision = arrPosb;
-				    
-				    var move = cdCreate(arrPosb[cssArrIndex][0], arrPosb[cssArrIndex][1], arrPosb[cssArrIndex][2], arrPosb[cssArrIndex][3], arrPosb[cssArrIndex][4], arrPosb[cssArrIndex][5]);
+				    move = cdCreate(arrPosb[cssArrIndex][0], arrPosb[cssArrIndex][1], arrPosb[cssArrIndex][2], arrPosb[cssArrIndex][3], arrPosb[cssArrIndex][4], arrPosb[cssArrIndex][5]);
 				    
 				    
 				    //Uncomment to see Index number for collision type
@@ -160,7 +164,7 @@
 		    
 		    toggleClasses = function (ele) {
 			    var i = ele.find('.zoomy').attr('rel');
-			    if (ZoomyS[i].state === 0 || ZoomyS[i].state === null ) {
+			    if (ZoomyS[i].state === 0 || ZoomyS[i].state === null) {
 				    ele.removeClass('inactive');
 			    } else {
 				    ele.addClass('inactive');
@@ -184,6 +188,25 @@
 			    zoom.css('visibility', 'hidden');
 			    toggleClasses(ele);
 		    },
+		    getBorderRadiusCSSObj = function (x) {
+				if (!options.round) {
+					return "";
+				} else {
+					var cssObj = {};
+					if (x === undefined) {
+						cssObj['-webkit-border-radius'] = cssObj['-moz-border-radius'] = cssObj['border-radius'] = options.zoomSize / 2 + 'px';
+					} else {
+						cssObj['-webkit-border-radius'] = cssObj['-moz-border-radius'] = cssObj['border-radius'] = options.zoomSize / 2 + 'px ' + options.zoomSize / 2 + 'px 0px 0px';
+					}
+					
+					if ($.browser.msie && parseInt($.browser.version, 10) === 9) {
+						$('.zoomy').find('span').css('margin', '0');
+					}
+					
+					return cssObj;
+	    
+				}
+		    },
 		
 		    setGlare = function (zoom) {
 			    zoom.children('span').css({
@@ -194,11 +217,8 @@
 	    
 		    // Load Zoom Image
 		    
-		    loadImage = function (ele, image, zoom) {
-			    var y = ele.children('img').height(),
-				    x = ele.children('img').width(),
-				    zS = options.zoomSize / 2,
-				    id = zoom.attr('rel');
+		    loadImage = function (image, zoom) {
+			    var id = zoom.attr('rel');
 			    //Move the Zoomy out of the screen view while loading img
 			    zoom.show('').css({top: '-999999px', left: '-999999px'});
 		
@@ -241,26 +261,6 @@
 			    }
 		    },
 		    
-		    getBorderRadiusCSSObj = function (x) {
-				if (!options.round) {
-					return "";
-				} else {
-					var cssObj = {};
-					if (x === undefined) {
-						cssObj['-webkit-border-radius'] = cssObj['-moz-border-radius'] = cssObj['border-radius'] = options.zoomSize / 2 + 'px';
-					} else {
-						cssObj['-webkit-border-radius'] = cssObj['-moz-border-radius'] = cssObj['border-radius'] = options.zoomSize / 2 + 'px ' + options.zoomSize / 2 + 'px 0px 0px';
-					}
-					
-					if ($.browser.msie && parseInt($.browser.version, 10) === 9) {
-						$('.zoomy').find('span').css('margin', '0');
-					}
-					
-					return cssObj;
-	    
-				}
-		    },
-		    
 		    zoomParams = function (ele, zoom) {
 			    var img = ele.children('img'),
 			    
@@ -274,7 +274,7 @@
 				    },
 					
 				    floats = {
-					'float': img.css('float')
+					    'float': img.css('float')
 				    },
 				    
 				    //Zoomy needs these to work
@@ -289,27 +289,28 @@
 				    
 				    //A lil bit of geneology o.0
 				    
-				    parentCenter = function(){
+				    parentCenter = function () {
 					    
 					    //Checking for parent text-align center
 					    
 					    var textAlign = ele.parent('*:first').css('text-align');
-					    if(textAlign === 'center'){
+					    if (textAlign === 'center') {
 						    margin.marginRight = 'auto';
 						    margin.marginLeft = 'auto';
 						
 					    }
 
 				    },
-				    id = zoom.attr('rel');
+				    id = zoom.attr('rel'),
+				    css = {};
 				    
 			    
 			    
-			    if(floats.float === 'none'){
-				    parentCenter()
+			    if (floats.float === 'none') {
+				    parentCenter();
 			    }
 			    
-			    var css = $.extend({}, margin, floats, zoomMin);
+			    $.extend(css, margin, floats, zoomMin);
 			    
 			    ZoomyS[id].css = css;
 		
@@ -340,7 +341,7 @@
 			    });
 	    
 		    },
-		    callback = function (type, ele, zoom) {
+		    callback = function (type, zoom) {
 			    var callbackFunc = type,
 				    zoomId = zoom.attr('rel');
 			
@@ -378,28 +379,21 @@
 				    image = attribute(),
 				    zoom = null,
 				    initCallback = options.zoomInit,
-				    eventHandler = (function () {
-					    var zoomDefaultText = function (x) {
-							if (options.zoomText === defaults.zoomText) {
-								options.zoomText = x;
-							}
-							return true;
-					    },
-						    hoverEvent = null,
-						    eventlist = [],	//List of Actual Events
+				    eventHandler = function () {
+					    var eventlist = [],	//List of Actual Events
 						    zoomStart = function () {
 							    zoomEnter(ele, zoom);
 									    
 							    /* Start Zoom Callback */
 									
-							    callback(options.zoomStart, ele, zoom);
+							    callback(options.zoomStart, zoom);
 						    },
 						    zoomStop = function (x) {
 							    zoomLeave(ele, zoom, x);
 									    
 							    /* Start Zoom Callback */
 									
-							    callback(options.zoomStop, ele, zoom);
+							    callback(options.zoomStop, zoom);
 						    },
 						    events = {		//List of Possible Events
 							    event: function (e) {
@@ -441,15 +435,15 @@
 								
 							    },
 							    'mousemove': function (e) {
-								    if(ZoomyS[i].state !== 0 && ZoomyS[i].state !== null){
+								    if (ZoomyS[i].state !== 0 && ZoomyS[i].state !== null) {
 								    
-									startZoom(ele, zoom, e);
+									    startZoom(ele, zoom, e);
 								    
 								    }
 								
 							    },
 							    'click': function () {
-								return false;
+								    return false;
 							    }
 						    };
 					    
@@ -458,7 +452,7 @@
 					    
 					    // Making sure there is only one mouse over event & Click returns false when it suppose to
 					    
-					    if (event === 'mouseover' ) {
+					    if (event === 'mouseover') {
 						    eventlist[event] = events.event;
 					    } else {
 						    eventlist[event] = events.event;
@@ -477,7 +471,9 @@
 					    
 					    ele.bind(eventlist);
 					
-				    }());
+				    };
+				    
+			    eventHandler();
 				
 			    //Creating Zoomy Element
 			    ele.addClass('parent-zoom').append('<div class="zoomy zoom-obj-' + i + '" rel="' + i + '"><img id="tmp"/></div>');
@@ -498,7 +494,7 @@
 			    
 			    // Load zoom image 
 			    
-			    loadImage(ele, image, zoom);
+			    loadImage(image, zoom);
 			    
 			    //Event Handler added 1.2
 			    
