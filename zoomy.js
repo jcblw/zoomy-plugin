@@ -411,6 +411,8 @@
 								    if (ZoomyS[i].state === 0 || ZoomyS[i].state === null) {
 								       
 									    zoomStart();
+									    
+									    startZoom(ele, zoom, e);
 									
 								    } else if (ZoomyS[i].state === 1 && event !== 'mouseover' && event !== 'mouseenter') {
 									    
@@ -438,7 +440,7 @@
 							    },
 							    'mousemove': function (e) {
 								    if(ZoomyS[i].state !== 0 && ZoomyS[i].state !== null){
-								    //e = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+								    
 									startZoom(ele, zoom, e);
 								    
 								    }
