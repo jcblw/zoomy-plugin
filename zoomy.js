@@ -306,7 +306,7 @@ var jQuery = jQuery || undefined;
 				    
 			    
 			    
-			    if (floats.float === 'none') {
+			    if (floats['float'] === 'none') {
 				    parentCenter();
 			    }
 			    
