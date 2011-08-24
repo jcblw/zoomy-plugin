@@ -14,13 +14,11 @@
 *
 */
 
-var jQuery = jQuery || undefined;
-
 
 (function ($) {
         
 // global zoomys state, Indexed, 0 = no zoom, 1 = zoom;
-    'use strict';
+    
 
     var ZoomyS = {
 	    count : []
