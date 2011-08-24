@@ -523,7 +523,25 @@
 	    
 
 	    $(this).each(function () {
-		    addZoomy($(this), ZoomyS.count.length);
+		
+		    var ele = $(this),
+			    img = ele.find('img');
+			    
+		    // Check to see if the image it is magnifing is loaded
+		
+		    img.one("load", function () {
+			    
+			    addZoomy(ele, ZoomyS.count.length);
+			    
+		    }).each(function () {
+			
+			    if (this.complete || ($.browser.msie && parseInt($.browser.version, 10) === 6)) {
+				
+				    $(this).trigger("load");
+				    
+			    }
+		    });
+		    
 	    });
 	    
 	    
