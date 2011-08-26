@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.3.2 modulized - jQuery plugin
+* Zoomy 1.3.2 a - jQuery plugin
 * http://redeyeops.com/plugins/zoomy
 *
 * Copyright (c) 2010 Jacob Lowe (http://redeyeoperations.com)
