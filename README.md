@@ -15,8 +15,6 @@ _Larry Battle_ [Email](mailto:blarry@bateru.com)
 
 Callbacks, callbacks, callbacks. We have inserted three new callbacks, zoomInit, zoomStart, and zoomEnd. These all stem for the fact that zoomText has been completely removed due to it UI invasiveness and buggy handling. Now to handle some text as if zoomText just use the callbacks to show hide the text. ZoomInit is called when the Zoomy function first fires so if you need to append any elemen to your anchor tag through the zoomInit callback would be the best time. The event handler is complete and pretty solid.
 
-===================================================================
-
 # Upcoming Features
 
 
