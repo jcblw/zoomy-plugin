@@ -9,7 +9,7 @@ _Jacob Lowe_ [Email](mailto:jacob@redeyeops.com)
 _Larry Battle_ [Email](mailto:blarry@bateru.com)
 
 
-#### Zoomy can make life easier _on the eyes_. ^_^
+#### Zoomy can make life easier _on the eyes. ^_^
 
 # New Features
 
@@ -18,10 +18,9 @@ Callbacks, callbacks, callbacks. We have inserted three new callbacks, zoomInit,
 ===================================================================
 
 # Upcoming Features
------------------
 
-### Zoomy Mobile.
-=============
+
+### Zoomy Mobile
 
 Should this be its own project or sense responsive page design is getting popular (because of  HTML 5 Boilerplate), should it be intergrated into zoomy. Let me know your thoughts.
 
