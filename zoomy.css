@@ -41,7 +41,7 @@
     background-color: #fff;
     z-index: 1000;
     overflow: hidden;
-    cursor: url(blank.cur), move;
+    cursor: url(./img/blank.cur), move;
     -webkit-transition-property: border-width, border-color, opacity;
     -webkit-transition-duration: 500ms, 1s, 500ms;
     -webkit-transition-timing-function: ease;
