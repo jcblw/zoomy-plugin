@@ -12,6 +12,8 @@
 * Addition fixes and modifications done by Larry Battle ( blarry@bateru.com )
 * Code has been refactored and the logic has been corrected.
 *
+*Cusor fix from IE by Chris Pearson ( http://www.upland.co.uk )
+*
 */
 
 
@@ -39,7 +41,7 @@
     background-color: #fff;
     z-index: 1000;
     overflow: hidden;
-    cursor: url(blank.gif), move;
+    cursor: url(blank.cur), move;
     -webkit-transition-property: border-width, border-color, opacity;
     -webkit-transition-duration: 500ms, 1s, 500ms;
     -webkit-transition-timing-function: ease;

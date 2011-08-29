@@ -8,6 +8,8 @@ _Jacob Lowe_ [Email](mailto:jacob@redeyeops.com)
 
 _Larry Battle_ [Email](mailto:blarry@bateru.com)
 
+_Chris Pearson_ [Website](http://www.upland.co.uk)
+
 
 #### Zoomy can make life easier _on the eyes. ^_^
 
