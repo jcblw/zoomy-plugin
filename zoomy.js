@@ -381,8 +381,15 @@
 					    initCallback = options.zoomInit,
 					    eventHandler = function () {
 						    var eventlist = [],	//List of Actual Events
+							    zoomMove = function (e) {
+								
+								    change.move(ele, zoom, e);
+								
+							    },
 							    zoomStart = function () {
 								    change.enter(ele, zoom);
+								    
+								    ele.bind('mousemove', zoomMove);
 										    
 								    /* Start Zoom Callback */
 										
@@ -390,6 +397,8 @@
 							    },
 							    zoomStop = function (x) {
 								    change.leave(ele, zoom, x);
+								    
+								    ele.unbind('mousemove', zoomMove);
 										    
 								    /* Start Zoom Callback */
 										
@@ -434,14 +443,6 @@
 									    }
 									
 								    },
-								    'mousemove': function (e) {
-									    if (ZoomyS[i].state !== 0 && ZoomyS[i].state !== null) {
-									    
-										    change.move(ele, zoom, e);
-									    
-									    }
-									
-								    },
 								    'click': function () {
 									    return false;
 								    }
@@ -463,7 +464,6 @@
 						    if (!options.clickable && event !== 'click') {
 							    eventlist.click = events.click;
 						    }
-						    eventlist.mousemove = events.mousemove;
 						    eventlist.mouseleave = events.mouseleave;
 						    
 						    
