@@ -396,7 +396,7 @@
 				    
 				    // Picking from the right attibute
 				    
-				    var image = (typeof (ele.attr(options.attr)) === 'string' && options.attr !== 'href') ?  ele.attr(options.attr) : ele.attr('href'),mage = attribute(),
+				    var image = (typeof (ele.attr(options.attr)) === 'string' && options.attr !== 'href') ?  ele.attr(options.attr) : ele.attr('href'),
 					    zoom = null,
 					    initCallback = options.zoomInit,
 					    eventHandler = function () {
@@ -471,6 +471,7 @@
 						    
 						    
 						    // Making sure there is only one mouse over event & Click returns false when it suppose to
+						    
 						    
 						    if (event === 'mouseover') {
 							    eventlist[event] = events.event;
