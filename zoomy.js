@@ -218,30 +218,17 @@
 		    style = {
 			
 			    round : function (x) {
-					if (!options.round) {
-						return "";
-					} else {
-						var cssObj = {};
-						if (x === undefined) {
-							cssObj['-webkit-border-radius'] = cssObj['-moz-border-radius'] = cssObj['border-radius'] = options.zoomSize / 2 + 'px';
-						} else {
-							cssObj['-webkit-border-radius'] = cssObj['-moz-border-radius'] = cssObj['border-radius'] = options.zoomSize / 2 + 'px ' + options.zoomSize / 2 + 'px 0px 0px';
-						}
-						
-						if ($.browser.msie && parseInt($.browser.version, 10) === 9) {
-							$('.zoomy').find('span').css('margin', '0');
-						}
-						
-						return cssObj;
-		    
-					}
+				var cssObj  = (!options.round) ? 0 : ( x === undefined) ?  options.zoomSize / 2 + 'px'  :  options.zoomSize / 2 + 'px ' +  options.zoomSize / 2 + 'px 0px 0px';
+				return cssObj;
 			    },
 			
 			    glare : function (zoom) {
 				    zoom.children('span').css({
 					    height: options.zoomSize / 2,
-					    width: options.zoomSize - 10
-				    }).css(style.round(0));
+					    width: options.zoomSize - 10,
+					    margin: ($.browser.msie && parseInt($.browser.version, 10) === 9) ? 0 : '5px auto',
+					    'border-radius': style.round(0)
+				    });
 			    },
 			    
 			    params : function (ele, zoom) {
@@ -307,8 +294,9 @@
 				    
 				    zoom.css({
 					    height: options.zoomSize,
-					    width: options.zoomSize
-				    }).css(style.round());
+					    width: options.zoomSize,
+					    'border-radius': style.round()
+				    });
 			    
 			
 			
