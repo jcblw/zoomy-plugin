@@ -330,30 +330,22 @@
 			
 				    if (zoom.find('img').attr('src') !== image) {
 					    zoom.find('img').attr('src', image).load(function () {
+						
+						    var assets = (options.glare) ?  '<span/>' : '';
+						
 						    ZoomyS[id].zoom = {
 							    'x': zoom.find('img').width(),
 							    'y': zoom.find('img').height()
 						    };
 	
-						    if (options.glare) {
-							
-								zoom.append('<span/>')
-									.css({
-										'background-image': 'url(' + image + ')'
-									})
-									.find('img')
-									.remove();
-								
-								style.glare(zoom);
-								
-						    } else {
-								
-								zoom.css({
-									'background-image': 'url(' + image + ')'
-								})
-								    .find('img')
-								    .remove();
-						    }
+						    zoom.append(assets)
+							    .css({
+								    'background-image': 'url(' + image + ')'
+							    })
+							    .find('img')
+							    .remove();
+						    
+						    style.glare(zoom);
 						    
 					    }).each(function () {
 						
