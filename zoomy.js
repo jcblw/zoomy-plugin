@@ -396,15 +396,7 @@
 				    
 				    // Picking from the right attibute
 				    
-				    var attribute = function () {
-					    if (typeof (ele.attr(options.attr)) === 'string' && options.attr !== 'href') {
-						    return ele.attr(options.attr);
-					    } else {
-						    return ele.attr('href');
-					    }
-				    },
-				    
-					    image = attribute(),
+				    var image = (typeof (ele.attr(options.attr)) === 'string' && options.attr !== 'href') ?  ele.attr(options.attr) : ele.attr('href'),mage = attribute(),
 					    zoom = null,
 					    initCallback = options.zoomInit,
 					    eventHandler = function () {
