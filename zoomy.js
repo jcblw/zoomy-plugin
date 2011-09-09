@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.3.2 a - jQuery plugin
+* Zoomy 1.3.3 - jQuery plugin
 * http://redeyeops.com/plugins/zoomy
 *
 * Copyright (c) 2010 Jacob Lowe (http://redeyeoperations.com)
@@ -326,7 +326,7 @@
 			    image : function (image, zoom) {
 				    var id = zoom.attr('rel');
 				    //Move the Zoomy out of the screen view while loading img
-				    zoom.show('').css({top: '-999999px', left: '-999999px'});
+				    zoom.show().css({top: '-999999px', left: '-999999px'});
 			
 				    if (zoom.find('img').attr('src') !== image) {
 					    zoom.find('img').attr('src', image).load(function () {
