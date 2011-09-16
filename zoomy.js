@@ -52,39 +52,40 @@
 					},
 					    id = zoom.attr('rel'),
 					    l = ele.offset(),
+					    theOffset = ZoomyS[id].zoom.border,
 					    zoomImgX = ZoomyS[id].zoom.x,
 					    zoomImgY = ZoomyS[id].zoom.y,
 					    tnImgX = ZoomyS[id].css.width,
 					    tnImgY = ZoomyS[id].css.height,
-					    zoomSize = options.zoomSize,
+					    zoomSize = options.zoomSize + (theOffset * 2),
 					    halfSize = zoomSize / 2,
 					    ratioX = ratio(tnImgX, zoomImgX),
 					    ratioY = ratio(tnImgY, zoomImgY),
-					    stop = Math.round(halfSize - (halfSize * ratioX)),
+					    stop = halfSize - (halfSize * ratioX) - (theOffset * ratioX) + theOffset,
 					    stopPos = function (x) {
-						    var p = (x - zoomSize) + stop;
-						    return p;
+						var p = (x - zoomSize - theOffset) + stop;
+						return p;
 					    },
 					    rightStop = stopPos(tnImgX),
 					    bottomStop = stopPos(tnImgY),
 					    zoomY = zoomImgY - zoomSize,
 					    zoomX = zoomImgX - zoomSize,
 					    mousePos = function (x, y) {
-						    var p = x - y - halfSize;	
-						    return p;
+						var p = x - y - halfSize;    
+						return p;
 					    },
 					    zoomPos = function (x, y, z) {
-						    var p = Math.round((x - y) / z) - halfSize;
-						    return p;
+						var p = ((x - y) / z) - halfSize + theOffset;
+						return p;
 					    },
 					    cdCreate = function (a, b, c, d) {
-						    var bgPos = '-' + a + 'px ' + '-' + b + 'px',
-							    o = {
-								    backgroundPosition: bgPos,
-								    left: c,
-								    top: d
-							    };
-						    return o;
+						var bgPos = '-' + a + 'px ' + '-' + b + 'px',
+						    o = {
+							backgroundPosition: bgPos,
+							left: c,
+							top: d
+						    };
+						return o;
 					    },
 					    posX = mousePos(e.pageX, l.left),
 					    posY = mousePos(e.pageY, l.top),
@@ -217,8 +218,8 @@
 		    
 		    style = {
 			
-			    round : function (x) {
-				var cssObj  = (!options.round) ? 0 : ( x === undefined) ?  options.zoomSize / 2 + 'px'  :  options.zoomSize / 2 + 'px ' +  options.zoomSize / 2 + 'px 0px 0px';
+			    round : function (x, y) {
+				var cssObj  = (!options.round) ? 0 : ( x === undefined) ?  options.zoomSize + y / 2 +  'px'  :  options.zoomSize / 2 + 'px ' +  options.zoomSize  / 2 + 'px 0px 0px';
 				return cssObj;
 			    },
 			
@@ -231,10 +232,23 @@
 				    });
 			    },
 			    
+			    border: function (zoom) {
+                
+				var borderRaw = options.border.replace(/^\s*|\s*$/g,''),
+				    borderArr = borderRaw.split(' '),
+				    interger = parseFloat(borderArr[0]),
+				    size = (borderArr.length > 2 && interger * 1 === interger ) ? interger : 0;
+				    
+				    
+				    
+				return [borderRaw, size];
+			    },
+			    
 			    params : function (ele, zoom) {
 				    var img = ele.children('img'),
 				    
 					    // TODO: Create function to filter out percents
+					    border = style.border(zoom),
 					    
 					    margin = {
 							'marginTop': img.css('margin-top'),
@@ -295,7 +309,8 @@
 				    zoom.css({
 					    height: options.zoomSize,
 					    width: options.zoomSize,
-					    'border-radius': style.round()
+					    'border-radius': style.round(undefined, border[1]),
+					    border: border[0]
 				    });
 			    
 			
@@ -331,11 +346,14 @@
 				    if (zoom.find('img').attr('src') !== image) {
 					    zoom.find('img').attr('src', image).load(function () {
 						
-						    var assets = (options.glare) ?  '<span/>' : '';
+						    var assets = (options.glare) ?  '<span/>' : '',
+							border = style.border(zoom);
+
 						
 						    ZoomyS[id].zoom = {
 							    'x': zoom.find('img').width(),
-							    'y': zoom.find('img').height()
+							    'y': zoom.find('img').height(),
+							    'border': border[1]
 						    };
 	
 						    zoom.append(assets)

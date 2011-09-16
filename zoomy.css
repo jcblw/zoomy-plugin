@@ -30,7 +30,7 @@
 
 .zoomy{
     position: absolute;
-    display: none;
+    visibility: hidden;
     background-repeat: no-repeat;
     -webkit-box-shadow: 0px 5px 10px #000;
     -moz-box-shadow: 0px 5px 10px #000;
@@ -70,15 +70,13 @@
 }
 
 .zoomy #tmp{
-    max-width: none;
-    max-height: none;
+    max-width: none !important;
+    max-height: none !important;
+    width: auto !important;
+    height: auto !important;
     top: -999999px;
     left: -999999px;
 }
 
-.zoomy.start{
-        border-width: 2px;
-        border-color: #444;
-}
 
 
