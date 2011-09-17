@@ -13,7 +13,11 @@ _Chris Pearson_ [Website](http://www.upland.co.uk)
 
 #### Zoomy can make life easier _on the eyes. ^_^
 
-# New Features
+# New Feature
+
+Zoomy borders! Now you can add a border to the zoom element. Also a [*Wiki*](https://github.com/jacoblwe20/zoomy-plugin/wiki/_pages) has been created and will be on the new website within the next month. 
+
+## Last Update
 
 Callbacks, callbacks, callbacks. We have inserted three new callbacks, zoomInit, zoomStart, and zoomEnd. These all stem for the fact that zoomText has been completely removed due to it UI invasiveness and buggy handling. Now to handle some text as if zoomText just use the callbacks to show hide the text. ZoomInit is called when the Zoomy function first fires so if you need to append any elemen to your anchor tag through the zoomInit callback would be the best time. The event handler is complete and pretty solid.
 
