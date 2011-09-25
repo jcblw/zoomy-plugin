@@ -34,6 +34,7 @@
 		    glare: true,
 		    clickable: false,
 		    attr: 'href',
+		    border: '5px solid #999',
 		    zoomInit: null,  //callback for when zoom initializes
 		    zoomStart: null, // callback for when zoom starts
 		    zoomStop: null // callback for when the zoom ends

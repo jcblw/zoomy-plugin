@@ -45,7 +45,7 @@
     -webkit-transition-property: border-width, border-color, opacity;
     -webkit-transition-duration: 500ms, 1s, 500ms;
     -webkit-transition-timing-function: ease;
-
+    border: 3px solid #fff;
 }
 
 .zoomy span{
