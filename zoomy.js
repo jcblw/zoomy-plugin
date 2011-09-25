@@ -21,7 +21,8 @@
     
     'use strict';
     var ZoomyS = {
-	    count : []
+	    count : [],
+	    pos: null
 	};
 
 
@@ -206,7 +207,7 @@
 				
 				    if (callbackFunc !== null && typeof callbackFunc === 'function') {
 					    
-					    callbackFunc(ZoomyS[zoomId]);
+					    callbackFunc($.extend({}, ZoomyS[zoomId], ZoomyS.pos));
 					    
 				    }
 				
@@ -403,6 +404,8 @@
 							    zoomMove = function (e) {
 								
 								    change.move(ele, zoom, e);
+								    
+								    //ZoomyS.pos = e;
 								
 							    },
 							    zoomStart = function () {
@@ -426,6 +429,8 @@
 							    events = {		//List of Possible Events
 								    event: function (e) {
 									
+									    ZoomyS.pos = e;
+									
 									    if (!options.clickable) {
 										    e.preventDefault();
 									    }
@@ -446,14 +451,23 @@
 									    
 									    
 									    
+									    
+									    
 								    },
-								    'mouseover': function () {
+								    'mouseover': function (e) {
+									
+									    ZoomyS.pos = e;
+									
 									    if (ZoomyS[i].state === 0) {
 										    zoomStart();
 									    }
+									    
+									    
 								
 								    },
-								    'mouseleave': function () {
+								    'mouseleave': function (e) {
+									
+									    ZoomyS.pos = e;
 								
 									    if (ZoomyS[i].state === 1) {
 										
