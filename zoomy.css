@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.3.2 - jQuery plugin 
+* Zoomy 1.4.0 - jQuery plugin 
 * http://redeyeops.com/plugins/zoomy
 *
 * Copyright (c) 2010 Jacob Lowe (http://redeyeoperations.com)
@@ -30,22 +30,20 @@
 
 .zoomy{
     position: absolute;
-    visibility: hidden;
+    display: none;
     background-repeat: no-repeat;
     -webkit-box-shadow: 0px 5px 10px #000;
     -moz-box-shadow: 0px 5px 10px #000;
     filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1, Color='#3333333', Positive='true');
-    border: 0px solid #333;
     line-height: 100px;
     text-align: center;
     background-color: #fff;
-    z-index: 1000;
+    z-index: 999;
     overflow: hidden;
     cursor: url(./img/blank.cur), move;
     -webkit-transition-property: border-width, border-color, opacity;
     -webkit-transition-duration: 500ms, 1s, 500ms;
     -webkit-transition-timing-function: ease;
-    border: 3px solid #fff;
 }
 
 .zoomy span{
@@ -70,13 +68,48 @@
 }
 
 .zoomy #tmp{
-    max-width: none !important;
-    max-height: none !important;
-    width: auto !important;
-    height: auto !important;
+    max-width: none;
+    max-height: none;
     top: -999999px;
     left: -999999px;
 }
 
+.zoomy.start{
+        border-width: 2px;
+        border-color: #444;
+}
+
+.zoomy-wrap{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    z-index: 999;
+}
+
+
+
+.zoomy-btn{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 50px;
+    height: 50px;
+    -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,.8);
+    box-shadow: 0px 1px 2px rgba(0,0,0,.8);
+    background-image: url(./img/zoom-touch.png), -moz-linear-gradient(top, rgba(249,252,247,1) 0%, rgba(245,249,240,1) 100%); /* FF3.6+ */
+    background-image: url(./img/zoom-touch.png), -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(249,252,247,1)), color-stop(100%,rgba(245,249,240,1))); /* Chrome,Safari4+ */
+    background-image: url(./img/zoom-touch.png), -webkit-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: url(./img/zoom-touch.png), -o-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* Opera 11.10+ */
+    background-image: url(./img/zoom-touch.png), -ms-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* IE10+ */
+    background-image: url(./img/zoom-touch.png), linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* W3C */
+    background-position: 0px 0px;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+}
+
+.active .zoomy-btn{
+    background-position: -50px 0px;
+}
 
 

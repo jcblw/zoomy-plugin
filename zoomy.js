@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.3.3 - jQuery plugin
+* Zoomy 1.4.0 beta- jQuery plugin
 * http://redeyeops.com/plugins/zoomy
 *
 * Copyright (c) 2010 Jacob Lowe (http://redeyeoperations.com)
@@ -25,7 +25,6 @@
 	    pos: null
 	};
 
-
     $.fn.zoomy = function (event, options) {
 
 	//defaults && option list
@@ -40,59 +39,70 @@
 		    zoomStart: null, // callback for when zoom starts
 		    zoomStop: null // callback for when the zoom ends
 	    },
-		    defaultEvent = 'click',
+		    //Test for touch
+		    touch = (typeof($.support.touch) === 'boolean') ? ($.support.touch) ? true : false : false,
 		    
+		    //Change default event on touch
+		    defaultEvent = (touch) ? 'touchstart' : 'click',
+		    
+		    utils = {
+			pos: {
+			    stop : function (x , z, o, s) {
+				var p = (x - z - o) + s;
+				return p;
+			    },
+			    mouse : function (x, y, h) {
+				var p = x - y - h;    
+				return p;
+			    },
+			    zoom : function (x, y, z, h, o) {
+				var p = ((x - y) / z) - h + o;
+				return p;
+			    }
+			    
+			},
+			css: function(a){
+			    var bgPos = '-' + a[0] + 'px ' + '-' + a[1] + 'px',
+				o = {
+				    backgroundPosition: bgPos,
+				    left: a[2],
+				    top: a[3]
+				};
+			    return o;
+			    
+			},
+			ratio: function(x, y){
+			    var z = x / y;
+			    return z;    
+			}
+		    },
 		    
 		    change = {
 			
 				// Move Zoom Cursor
 				
 				move : function (ele, zoom, e) {
-				    var ratio = function (x, y) {
-					    var z = x / y;
-					    return z;
-					},
-					    id = zoom.attr('rel'),
+				    var    id = zoom.attr('rel'),
 					    l = ele.offset(),
 					    theOffset = ZoomyS[id].zoom.border,
+					    yOffset = (touch) ? -50 : 0,
 					    zoomImgX = ZoomyS[id].zoom.x,
 					    zoomImgY = ZoomyS[id].zoom.y,
 					    tnImgX = ZoomyS[id].css.width,
 					    tnImgY = ZoomyS[id].css.height,
 					    zoomSize = options.zoomSize + (theOffset * 2),
 					    halfSize = zoomSize / 2,
-					    ratioX = ratio(tnImgX, zoomImgX),
-					    ratioY = ratio(tnImgY, zoomImgY),
+					    ratioX = utils.ratio(tnImgX, zoomImgX),
+					    ratioY = utils.ratio(tnImgY, zoomImgY),
 					    stop = halfSize - (halfSize * ratioX) - (theOffset * ratioX) + theOffset,
-					    stopPos = function (x) {
-						var p = (x - zoomSize - theOffset) + stop;
-						return p;
-					    },
-					    rightStop = stopPos(tnImgX),
-					    bottomStop = stopPos(tnImgY),
+					    rightStop = utils.pos.stop(tnImgX, zoomSize, theOffset, stop),
+					    bottomStop = utils.pos.stop(tnImgY, zoomSize, theOffset, stop),
 					    zoomY = zoomImgY - zoomSize,
 					    zoomX = zoomImgX - zoomSize,
-					    mousePos = function (x, y) {
-						var p = x - y - halfSize;    
-						return p;
-					    },
-					    zoomPos = function (x, y, z) {
-						var p = ((x - y) / z) - halfSize + theOffset;
-						return p;
-					    },
-					    cdCreate = function (a, b, c, d) {
-						var bgPos = '-' + a + 'px ' + '-' + b + 'px',
-						    o = {
-							backgroundPosition: bgPos,
-							left: c,
-							top: d
-						    };
-						return o;
-					    },
-					    posX = mousePos(e.pageX, l.left),
-					    posY = mousePos(e.pageY, l.top),
-					    leftX = zoomPos(e.pageX, l.left, ratioX),
-					    topY = zoomPos(e.pageY, l.top, ratioY),
+					    posX = utils.pos.mouse(e.pageX, l.left , halfSize),
+					    posY = utils.pos.mouse(e.pageY + yOffset , l.top, halfSize),
+					    leftX = utils.pos.zoom(e.pageX, l.left, ratioX, halfSize, theOffset),
+					    topY = utils.pos.zoom(e.pageY + yOffset, l.top , ratioY, halfSize, theOffset),
 					    
 					    // Collision Detection Possiblities
 					    
@@ -154,7 +164,7 @@
 					    
 					    //Create CSS object to move Zoomy
 					    
-					    move = cdCreate(arrPosb[cssArrIndex][0], arrPosb[cssArrIndex][1], arrPosb[cssArrIndex][2], arrPosb[cssArrIndex][3], arrPosb[cssArrIndex][4], arrPosb[cssArrIndex][5]);
+					    move = utils.css(arrPosb[cssArrIndex]);
 					    
 					    
 					    //Uncomment to see Index number for collision type
@@ -321,7 +331,14 @@
 			
 			
 				    img.one("load", function () {
+					
 					    ele.css(ZoomyS[id].css);
+					    
+					    					    
+					    if(ele.parent('.zoomy-wrap').length){
+						    ele.parent('.zoomy-wrap').css(ZoomyS[id].css);
+					    }
+
 				    }).each(function () {
 					    if (this.complete || ($.browser.msie && parseInt($.browser.version, 10) === 6)) {
 						    $(this).trigger("load");
@@ -401,8 +418,17 @@
 					    initCallback = options.zoomInit,
 					    eventHandler = function () {
 						    var eventlist = [],	//List of Actual Events
+							    //User Interface Device filter for touch and mouse
+							    uid = {
+								move: (touch) ? 'touchmove' : 'mousemove',
+								begin: (touch) ? 'touchstart' : 'mouseover',
+								end: (touch) ? 'touchend' : 'mouseleave',
+								quick: (touch) ? 'tap' : 'click'
+							    },
 							    zoomMove = function (e) {
-								
+								    
+								    e = (touch) ? e.originalEvent.touches[0] || e.originalEvent.changedTouches[0] : e;
+								    
 								    change.move(ele, zoom, e);
 								    
 								    //ZoomyS.pos = e;
@@ -411,23 +437,51 @@
 							    zoomStart = function () {
 								    change.enter(ele, zoom);
 								    
-								    ele.bind('mousemove', zoomMove);
+								    ele.bind(uid.move, zoomMove);
 										    
 								    /* Start Zoom Callback */
 										
 								    change.callback(options.zoomStart, zoom);
 							    },
 							    zoomStop = function (x) {
+								
 								    change.leave(ele, zoom, x);
 								    
-								    ele.unbind('mousemove', zoomMove);
+								    ele.unbind(uid.move, zoomMove);
 										    
 								    /* Start Zoom Callback */
 										
 								    change.callback(options.zoomStop, zoom);
 							    },
+							    //New handle to hold start
+							   startHandle = function(e){
+								    
+								    e = (touch) ? e.originalEvent.touches[0] || e.originalEvent.changedTouches[0] : e;
+							       
+								   ZoomyS.pos = e;
+							       
+								   if (ZoomyS[i].state === 0) {
+									   zoomStart();
+								   }
+							       
+							   },
+							   
+							   //New handle to hold stop
+							   stopHandle = function(e){
+							       
+								   ZoomyS.pos = e;
+						       
+								   if (ZoomyS[i].state === 1) {
+								       
+									   zoomStop(null);
+										   
+								   }
+							       
+							   },
 							    events = {		//List of Possible Events
 								    event: function (e) {
+									
+									    
 									
 									    ZoomyS.pos = e;
 									
@@ -440,6 +494,8 @@
 										    zoomStart();
 										    
 										    //Fix on click show and positioning issues
+										    
+										    e = (touch) ? e.originalEvent.touches[0] || e.originalEvent.changedTouches[0] : e;
 										    
 										    change.move(ele, zoom, e);
 										
@@ -454,28 +510,12 @@
 									    
 									    
 								    },
-								    'mouseover': function (e) {
-									
-									    ZoomyS.pos = e;
-									
-									    if (ZoomyS[i].state === 0) {
-										    zoomStart();
-									    }
-									    
-									    
-								
-								    },
-								    'mouseleave': function (e) {
-									
-									    ZoomyS.pos = e;
-								
-									    if (ZoomyS[i].state === 1) {
-										
-										    zoomStop(null);
-											    
-									    }
-									
-								    },
+								    'mouseover': startHandle,
+								    'mouseleave': stopHandle,
+								    
+								    //New Added Events for touch
+								    'touchstart' : startHandle,
+								    'touchend' : stopHandle,
 								    'click': function () {
 									    return false;
 								    }
@@ -487,35 +527,81 @@
 						    // Making sure there is only one mouse over event & Click returns false when it suppose to
 						    
 						    
-						    if (event === 'mouseover') {
+						    if (event === 'mouseover' || event === 'touchstart') {
 							    eventlist[event] = events.event;
 						    } else {
 							    eventlist[event] = events.event;
-							    eventlist.mouseover = events.mouseover;
+							    eventlist[uid.begin] = events[uid.begin];
 						    }
 						    
 						    if (!options.clickable && event !== 'click') {
 							    eventlist.click = events.click;
 						    }
-						    eventlist.mouseleave = events.mouseleave;
+						    eventlist[uid.end] = events[uid.end];
 						    
 						    
 						    
 						    // Binding Events to element
 						    
-						    ele.bind(eventlist);
-						
-					    };
+						    if(touch){
+						    
+							    $('.zoomy-btn-' + i).toggle(function(){
+								
+								$(this).parent('div').addClass('active');
+								
+								ele.bind(eventlist);
+								
+							    }, function(){
+								
+								$(this).parent('div').removeClass('active');
+								
+								ele.unbind(eventlist);
+								
+							    })
+							
+						    }else{
+							
+							    ele.bind(eventlist);
+							    
+						    }
+						    
+						    $(window).resize(function(){
+							
+							    ele
+								.attr('style', '')
+								.parent('.zoomy-wrap')
+								.attr('style', '');
+							    
+							    window.setTimeout(function(){
+								
+								style.params(ele, zoom);
+								
+							    }, 100)
+							    
+							
+						    });
+						    
+					    },
+					    //Add Button if  is touch
+					    button = (touch) ? ['<div class="zoomy-wrap" />', '<div class=" zoomy-btn zoomy-btn-' + i + '"></div>'] : ['', ''];
 					    
-				    eventHandler();
+				    
 					
 				    //Creating Zoomy Element
-				    ele.addClass('parent-zoom').append('<div class="zoomy zoom-obj-' + i + '" rel="' + i + '"><img id="tmp"/></div>');
+				    ele
+					    .addClass('parent-zoom')
+					    .wrap(button[0])
+					    .append('<div class="zoomy zoom-obj-' + i + '" rel="' + i + '"><img id="tmp"/></div>' )
+					    .after(button[1]);
+				    
+				    
 				    
 				    
 				    //Setting the Zoom Variable towards the right zoom object
 				    
 				    zoom = $('.zoom-obj-' + i);
+				    
+				    eventHandler();
 					    
 				    
 				    if (initCallback !== null && typeof initCallback === 'function') {
@@ -599,8 +685,6 @@
 		   
 		    
 	    });
-	    
-	    
     
 
     };
