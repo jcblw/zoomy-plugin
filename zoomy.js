@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.4.0 beta- jQuery plugin
+* Zoomy 1.4.1 - jQuery plugin
 * http://redeyeops.com/plugins/zoomy
 *
 * Copyright (c) 2010 Jacob Lowe (http://redeyeoperations.com)
@@ -480,8 +480,8 @@
 							   },
 							    events = {		//List of Possible Events
 								    event: function (e) {
-									
-									    
+
+								    	console.log('touchstart');
 									
 									    ZoomyS.pos = e;
 									
@@ -504,11 +504,7 @@
 										    zoomStop(0);
 										
 									    }
-									    
-									    
-									    
-									    
-									    
+									      
 								    },
 								    'mouseover': startHandle,
 								    'mouseleave': stopHandle,
@@ -547,15 +543,15 @@
 						    
 							    $('.zoomy-btn-' + i).toggle(function(){
 								
-								$(this).parent('div').addClass('active');
+									$(this).parent('div').addClass('active');
 								
-								ele.bind(eventlist);
+									ele.bind(eventlist).trigger('touchstart');
 								
 							    }, function(){
 								
-								$(this).parent('div').removeClass('active');
+									$(this).parent('div').removeClass('active');
 								
-								ele.unbind(eventlist);
+									ele.unbind(eventlist);
 								
 							    })
 							
