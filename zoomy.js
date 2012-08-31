@@ -17,7 +17,7 @@
 
 (function ($) {
         
-// global zoomys state, Indexed, 0 = no zoom, 1 = zoom;
+    // @variable ZoomyS Object - Holds alot of data for each instance of Zoomy
     
     'use strict';
     var ZoomyS = {
@@ -25,9 +25,16 @@
         pos: null
     };
 
+    /** @method     zoomy   Function    - Plugin for jQuery
+     *  @param      event   String      - Event to initiate Zoomy
+     *  @param      options object      - Options Object that holds optons for configuration
+     */
+
     $.fn.zoomy = function (event, options) {
 
-    //defaults && option list
+        
+        // @variable defaults Object - Is overwritten by options Object
+
         var defaults = {
             zoomSize    : 200,
             round       : true,
@@ -45,10 +52,32 @@
             //Change default event on touch
             defaultEvent = (touch) ? 'touchstart' : 'click',
             
-            utils = {
-                //postioning helpers
-                pos: {
 
+            /* @variable    utils   Object      - Set of utitlities needed for Zoomy
+             * @method      pos     Object      - position utitlities
+             *
+             * @method      stop    Function    - Helper to calculate stops for crash detection
+             * @param       x       Interger    - Thumnail images position
+             * @param       z       Interger    - Size of the Zoom element
+             * @param       o       Interger    - Size of border to offset it
+             * @param       s       Interger    - Postion of Stop ^^
+             *
+             * @method      mouse   Function    - Mouse position relative to image
+             * @param       x       Interger    - Offest from page
+             * @param       y       Interger    - Offset from thumbnail
+             * @param       h       Interger    - Half the size of the Zoom Element
+             *
+             * @method      zoom    Funtion     - Postion of Zoomy Element
+             * @param       x       Interger    - Offset from page
+             * @param       y       Interger    - Element positon
+             * @param       z       Interger    - Ratio of Zoom
+             * @param       h       Interger    - Half the size of Zoomt Element
+             * @param       o       Interger    - Size of border to offset it
+             *
+             */
+
+            utils = {
+                pos: {
                     stop    : function (x , z, o, s) {
                         return (x - z - o) + s;
                     },
@@ -58,9 +87,11 @@
                     zoom    : function (x, y, z, h, o) {
                         return ((x - y) / z) - h + o;
                     }
-                    
                 },
-                //compiles background position
+                /* @method  css   Function  - Compiles and Object of Css properties
+                 *
+                 *
+                 */
                 css: function(a){
                     return {
                         backgroundPosition  : '-' + a[0] + 'px ' + '-' + a[1] + 'px',
