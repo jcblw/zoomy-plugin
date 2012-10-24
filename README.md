@@ -1,33 +1,41 @@
 # Zoomy 'Zoom' jQuery Plugin
-
+#### Zoomy can make life easier _on the eyes. ^_^
 -------------------------------------------------------------
 
-### Contributors
+## Getting Started
 
-_Jacob Lowe_ [Email](mailto:jacob@redeyeops.com)
+[_WIKI pages_](https://github.com/jacoblwe20/zoomy-plugin/wiki/_pages)
 
-_Larry Battle_ [Email](mailto:blarry@bateru.com)
+## Developing
 
-_Chris Pearson_ [Website](http://www.upland.co.uk)
+Just recently I have added a simple file server script that runs on NodeJS. To run the script just use this command in your terminal.
 
+	node app.js
 
-#### Zoomy can make life easier _on the eyes. ^_^
+If Node is not installed this will not run.
 
 # New Feature
 
-Zoomy borders! Now you can add a border to the zoom element. Also a [*Wiki*](https://github.com/jacoblwe20/zoomy-plugin/wiki/_pages) has been created and will be on the new website within the next month. 
+###Zoomy Touch
+
+This is a pretty large new feature and is written right into the core of Zoomy. Just add an extra file and you have Zoomy working on touch devices.
+
+###Responsive
+
+This has been a feature for a while in my dev files, but finally it has made it to stable. 
 
 ## Last Update
 
+Now you can add a border to the zoom element. Also a [*Wiki*](https://github.com/jacoblwe20/zoomy-plugin/wiki/_pages) has been created and will be on the new website within the next month. 
+
 Callbacks, callbacks, callbacks. We have inserted three new callbacks, zoomInit, zoomStart, and zoomEnd. These all stem for the fact that zoomText has been completely removed due to it UI invasiveness and buggy handling. Now to handle some text as if zoomText just use the callbacks to show hide the text. ZoomInit is called when the Zoomy function first fires so if you need to append any elemen to your anchor tag through the zoomInit callback would be the best time. The event handler is complete and pretty solid.
 
-# Upcoming Features
+# Contributors
 
+_Jacob Lowe_ [Email](mailto:jacob@redeyeops.com)
 
-### Zoomy Mobile
+_Larry Battle_ 
 
-Should this be its own project or sense responsive page design is getting popular (because of  HTML 5 Boilerplate), should it be intergrated into zoomy. Let me know your thoughts.
-
-Not really a zoomy feature but is something to do with the community, the zoomy page is going Wiki. I have finally figured out a optimal method for updating the page once it has fully became a wiki. Just cruise over to the pages and add you two sense and if its relevent infomation it can make it to the Zoomy Site. Also Im going to create a section with a place where u can put links to your projects where you use Zoomy.
+_Chris Pearson_ [Website](http://www.upland.co.uk)
 
 Suggest Features @ [http://redeyeoperations.com/plugins/zoomy](http://redeyeoperations.com/plugins/zoomy)
