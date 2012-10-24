@@ -449,9 +449,11 @@
                 end     : (touch) ? 'touchend' : 'mouseleave',
                 quick   : (touch) ? 'tap' : 'click'
                 },
-                zoomMove = function (e) {
+                zoomMove = function (e, originalEvent) {
+
+                  //debugger;
                   
-                  e = (touch) ? e.originalEvent.touches[0] || e.originalEvent.changedTouches[0] : e;
+                  e = (touch) ? (originalEvent) ? originalEvent.touches[0] || originalEvent.changedTouches[0] : e.originalEvent.touches[0] || e.originalEvent.changedTouches[0] : e;
                   
                   change.move(ele, zoom, e);
                   
@@ -478,9 +480,9 @@
                   change.callback(options.zoomStop, zoom);
                 },
                 //New handle to hold start
-                 startHandle = function(e){
+                 startHandle = function(e, originalEvent){
                   
-                  e = (touch) ? e.originalEvent.touches[0] || e.originalEvent.changedTouches[0] : e;
+                   e = (touch) ? (originalEvent) ? originalEvent.touches[0] || originalEvent.changedTouches[0] : e.originalEvent.touches[0] || e.originalEvent.changedTouches[0] : e;
                    
                    ZoomyS.pos = e;
                    
@@ -536,8 +538,8 @@
                   //New Added Events for touch
                   'touchstart': startHandle,
                   'touchend'  : stopHandle,
-                  'click'     : function () {
-                    return false;
+                  'click'     : function (e) {
+                    e.preventDefault();
                   }
                 };
               
@@ -564,20 +566,28 @@
               // Binding Events to element
               
               if(touch){
-              
-                $('.zoomy-btn-' + i).toggle(function(){
-                
-                  $(this).parent('div').addClass('active');
-                
-                  ele.bind(eventlist).trigger('touchstart');
-                
-                }, function(){
-                
-                  $(this).parent('div').removeClass('active');
-                
-                  ele.unbind(eventlist);
-                
+
+                var btn = $('.zoomy-btn-' + i),
+                    wrp = btn.parent('div'),
+                    touchTimer = setTimeout();
+
+                btn.bind('touchstart', function(e){
+                  ele.bind(eventlist);
+                  ele.trigger('touchstart', e.originalEvent);
+                  ele.trigger('touchmove', e.originalEvent);
+                  wrp.addClass('active');
+                }).bind('touchmove', function(e){
+                  clearTimeout(touchTimer);
+                  e.preventDefault();
+                  ele.trigger('touchmove', e.originalEvent);
+                  touchTimer = setTimeout(function(){
+                    wrp.removeClass('active');
+                    ele.trigger('touchend');
+                    ele.unbind(eventlist);
+                  },500)
+
                 });
+
               
               }else{
               
@@ -613,9 +623,6 @@
             .wrap(button[0])
             .append('<div class="zoomy zoom-obj-' + i + '" rel="' + i + '"><img id="tmp"/></div>' )
             .after(button[1]);
-          
-          
-          
           
           //Setting the Zoom Variable towards the right zoom object
           
