@@ -109,7 +109,7 @@
           var id          = zoom.attr('rel'),
             l           = ele.offset(),
             theOffset   = ZoomyS[id].zoom.border,
-            yOffset     = (touch) ? -50 : 0,
+            yOffset     = (touch) ? -70 : 0,
             zoomImgX    = ZoomyS[id].zoom.x,
             zoomImgY    = ZoomyS[id].zoom.y,
             tnImgX      = ZoomyS[id].css.width,
@@ -491,6 +491,7 @@
                   'touchend'  : stopHandle,
                   'click'     : function (e) {
                     e.preventDefault();
+                    e.stopPropagation();
                   }
                 };
                
@@ -513,23 +514,30 @@
                 // Handling Events a bit differntly
                 var btn = $('.zoomy-btn-' + i),
                     wrp = btn.parent('div'),
-                    touchTimer = setTimeout();
+                    touchTimer = setTimeout(),
+                    addEvents = function(e){
+                      ele.bind(eventlist);
+                      ele.trigger('touchstart', e.originalEvent);
+                      ele.trigger('touchmove', e.originalEvent);
+                      wrp.addClass('active');
+                    },
+                    removeEvents = function(){
+                      wrp.removeClass('active');
+                      ele.trigger('touchend');
+                      ele.unbind(eventlist);
+                    },
+                    moving = function(){
 
-                btn.bind('touchstart', function(e){
-                  ele.bind(eventlist);
-                  ele.trigger('touchstart', e.originalEvent);
-                  ele.trigger('touchmove', e.originalEvent);
-                  wrp.addClass('active');
-                }).bind('touchmove', function(e){
-                  clearTimeout(touchTimer);
-                  e.preventDefault();
-                  ele.trigger('touchmove', e.originalEvent);
-                  touchTimer = setTimeout(function(){
-                    wrp.removeClass('active');
-                    ele.trigger('touchend');
-                    ele.unbind(eventlist);
-                  },500)
+                    };
 
+                // TODO setup events so that the image cannot be clicked
+                    
+                btn.bind({
+                  'touchstart': addEvents, 
+                  'touchmove': function(e){
+                    e.preventDefault();
+                    ele.trigger('touchmove', e.originalEvent);
+                  },'touchend': removeEvents
                 });
 
               
