@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.4.4 - jQuery plugin
+* Zoomy 1.4.5 - jQuery plugin
 * http://redeyeops.com/plugins/zoomy
 *
 * Copyright (c) 2012 Jacob Lowe (http://redeyeoperations.com)
@@ -50,7 +50,7 @@
       defaultEvent = (touch) ? 'touchstart' : 'click',
       
 
-      /* @variable    utils   Object      - Set of utitlities needed for Zoomy
+      /* @object      utils   Object      - Set of utitlities needed for Zoomy
        * @method      pos     Object      - position utitlities
        *
        * @method      stop    Function    - Helper to calculate stops for crash detection
@@ -71,7 +71,6 @@
        * @param       h       Interger    - Half the size of Zoomt Element
        * @param       o       Interger    - Size of border to offset it
        *
-       * TODO : Finish Docs!
        */
       utils = {
         pos: {
@@ -100,7 +99,30 @@
           return x / y;   
         }
       },
-      
+
+      /* @object  change  Object    - Handle events that directly effect the Elements
+       * 
+       * @method  move    Function  - Calculates and handles moving the Zoomy Element
+       * @param   ele     Object    - The main element or the anchor tag wrapping img
+       * @param   zoom    Oject     - The Zoomy Element
+       * @param   e       Object    - The event object for mousemove or touchmove. 
+       *
+       * @method  classes Function  - Toggles classes on main element
+       * @param   ele     Object    - The main element or the anchor tag wrapping img
+       *
+       * @method  enter   Function  - Handles the start of Zoomy
+       * @param   ele     Object    - The main element or the anchor tag wrapping img
+       * @param   zoom    Oject     - The Zoomy Element
+       *
+       * @method  leave   Function  - Handles the stopping of Zoomy 
+       * @param   ele     Object    - The main element or the anchor tag wrapping img
+       * @param   zoom    Oject     - The Zoomy Element
+       * @param   x       Interger  - Flag to handle at diffent state of Zoomy.
+       *
+       * @method  callback  Function  - Executes a callback function if one is passed
+       * @param   type      Function  - The actual callback function
+       * @param   zoom      Object    - The Zoomy Object to pull data from
+       */
       change = {
       
         // Move Zoom Cursor
