@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.4.0 - jQuery plugin 
+* Zoomy 1.4.5 - jQuery plugin 
 * http://redeyeops.com/plugins/zoomy
 *
 * Copyright (c) 2010 Jacob Lowe (http://redeyeoperations.com)
@@ -15,7 +15,9 @@
 *Cusor fix from IE by Chris Pearson ( http://www.upland.co.uk )
 *
 */
-
+.parent-zoom{
+    -webkit-touch-callout: none!important;
+}
 
 .parent-zoom img{
     -webkit-transition-property: opacity;
@@ -26,7 +28,6 @@
     cursor: -webkit-zoom-in;
     border: 0;
 }
-
 
 .zoomy{
     position: absolute;
@@ -89,26 +90,30 @@
     z-index: 999;
 }
 
-
-
 .zoomy-btn{
+    font-family: sans-serif;
     position: absolute;
     top: 5px;
     right: 5px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    width: 50px;
+    border-radius: 25px;
     height: 50px;
-    -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,.8);
-    box-shadow: 0px 1px 2px rgba(0,0,0,.8);
-    background-image: url(./img/zoom-touch.png), -moz-linear-gradient(top, rgba(249,252,247,1) 0%, rgba(245,249,240,1) 100%); /* FF3.6+ */
-    background-image: url(./img/zoom-touch.png), -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(249,252,247,1)), color-stop(100%,rgba(245,249,240,1))); /* Chrome,Safari4+ */
-    background-image: url(./img/zoom-touch.png), -webkit-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* Chrome10+,Safari5.1+ */
-    background-image: url(./img/zoom-touch.png), -o-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* Opera 11.10+ */
-    background-image: url(./img/zoom-touch.png), -ms-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* IE10+ */
-    background-image: url(./img/zoom-touch.png), linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* W3C */
+    -webkit-box-shadow: 0px 1px 2px rgba(255,255,255,.8);
+    box-shadow: 0px 1px 2px rgba(255,255,255,.8);
+    background: rgba(0,0,0,.8);
     background-position: 0px 0px;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+    line-height: 50px;
+    padding-right: 15px;
+    color: #fff;
+}
+
+.zoomy-btn svg{
+    margin: 5px;
+    float: left;
+}
+
+.active .zoomy-btn svg{
+    display: none;
 }
 
 .active .zoomy-btn{
@@ -120,6 +125,8 @@
     border: none;
     top: 0px;
     right: 0px;
+    overflow: hidden;
+    color: rgba(0,0,0,0);
 }
 
 
