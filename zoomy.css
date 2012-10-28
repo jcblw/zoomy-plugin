@@ -1,6 +1,6 @@
 /*
-* Zoomy 1.4.5 - jQuery plugin 
-* http://redeyeops.com/plugins/zoomy
+* Zoomy 1.4.6 - jQuery plugin 
+* http://zoomy.me
 *
 * Copyright (c) 2010 Jacob Lowe (http://redeyeoperations.com)
 * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -15,8 +15,12 @@
 *Cusor fix from IE by Chris Pearson ( http://www.upland.co.uk )
 *
 */
-.parent-zoom{
+body{
     -webkit-touch-callout: none!important;
+}
+
+.parent-zoom{
+    -webkit-user-select: none!important;
 }
 
 .parent-zoom img{

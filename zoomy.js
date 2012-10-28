@@ -1,6 +1,6 @@
 /*
-* Zoomy 1.4.5 - jQuery plugin
-* http://redeyeops.com/plugins/zoomy
+* Zoomy 1.4.6 - jQuery plugin
+* http://zoomy.me
 *
 * Copyright (c) 2012 Jacob Lowe (http://redeyeoperations.com)
 * Licensed under the MIT (MIT-LICENSE.txt)
@@ -97,7 +97,25 @@
         //asspect ratio
         ratio: function(x, y){
           return x / y;   
+        },
+        setParams: function(zoom){
+
+          var id = zoom.attr('rel');
+
+          ZoomyS[id].size         = {};
+          ZoomyS[id].size.full    = options.zoomSize + (ZoomyS[id].zoom.border * 2);
+          ZoomyS[id].size.half    = ZoomyS[id].size.full / 2;
+          ZoomyS[id].size.ratioX  = utils.ratio(ZoomyS[id].css.width, ZoomyS[id].zoom.x);
+          ZoomyS[id].size.ratioY  = utils.ratio(ZoomyS[id].css.height, ZoomyS[id].zoom.y);
+          ZoomyS[id].size.zoomX   = ZoomyS[id].zoom.x - ZoomyS[id].size.full; 
+          ZoomyS[id].size.zoomY   = ZoomyS[id].zoom.y - ZoomyS[id].size.full;
+
+          ZoomyS[id].stop         = {};
+          ZoomyS[id].stop.main    = ZoomyS[id].size.half - (ZoomyS[id].size.half * ZoomyS[id].size.ratioX) - (ZoomyS[id].zoom.border * ZoomyS[id].size.ratioX) + ZoomyS[id].zoom.border;
+          ZoomyS[id].stop.right   = utils.pos.stop(ZoomyS[id].css.width, ZoomyS[id].size.full, ZoomyS[id].zoom.border, ZoomyS[id].stop.main);
+          ZoomyS[id].stop.bottom  = utils.pos.stop(ZoomyS[id].css.height, ZoomyS[id].size.full, ZoomyS[id].zoom.border, ZoomyS[id].stop.main);
         }
+
       },
 
       /* @object  change  Object    - Handle events that directly effect the Elements
@@ -127,28 +145,17 @@
       
         // Move Zoom Cursor
         move : function (ele, zoom, e) {
+       
           // need to stop as many of these variable in data object to avoid recalulation of variables
-          var id          = zoom.attr('rel'),
+          var id        = zoom.attr('rel'),
             l           = ele.offset(),
-            theOffset   = ZoomyS[id].zoom.border,
+            dataset     = ZoomyS[id],
             yOffset     = (touch) ? -70 : 0,
-            zoomImgX    = ZoomyS[id].zoom.x,
-            zoomImgY    = ZoomyS[id].zoom.y,
-            tnImgX      = ZoomyS[id].css.width,
-            tnImgY      = ZoomyS[id].css.height,
-            zoomSize    = options.zoomSize + (theOffset * 2),
-            halfSize    = zoomSize / 2,
-            ratioX      = utils.ratio(tnImgX, zoomImgX),
-            ratioY      = utils.ratio(tnImgY, zoomImgY),
-            stop        = halfSize - (halfSize * ratioX) - (theOffset * ratioX) + theOffset,
-            rightStop   = utils.pos.stop(tnImgX, zoomSize, theOffset, stop),
-            bottomStop  = utils.pos.stop(tnImgY, zoomSize, theOffset, stop),
-            zoomY       = zoomImgY - zoomSize,
-            zoomX       = zoomImgX - zoomSize,
-            posX        = utils.pos.mouse(e.pageX, l.left , halfSize),
-            posY        = utils.pos.mouse(e.pageY + yOffset , l.top, halfSize),
-            leftX       = utils.pos.zoom(e.pageX, l.left, ratioX, halfSize, theOffset),
-            topY        = utils.pos.zoom(e.pageY + yOffset, l.top , ratioY, halfSize, theOffset),
+            // only dynamic variables
+            posX        = utils.pos.mouse(e.pageX, l.left , dataset.size.half),
+            posY        = utils.pos.mouse(e.pageY + yOffset , l.top, dataset.size.half),
+            leftX       = utils.pos.zoom(e.pageX, l.left, dataset.size.ratioX, dataset.size.half, ZoomyS[id].zoom.border),
+            topY        = utils.pos.zoom(e.pageY + yOffset, l.top , dataset.size.ratioY, dataset.size.half, ZoomyS[id].zoom.border),
             
             // Collision Detection Possiblities
             arrPosb = {
@@ -157,40 +164,39 @@
               0 : [leftX, topY, posX, posY],
               
             // On Left Side
-              1 : [0, topY, -stop, posY],
+              1 : [0, topY, -dataset.stop.main, posY],
 
             // On the Top Left Corner
-              2 : [0, 0, -stop, -stop],
+              2 : [0, 0, -dataset.stop.main, -dataset.stop.main],
               
             //On the Bottom Left Corner
-              3 : [0, zoomY, -stop, bottomStop],
+              3 : [0, dataset.size.zoomY, -dataset.stop.main, dataset.stop.bottom],
               
             // On the Top
-              4 : [leftX, 0, posX, -stop],
+              4 : [leftX, 0, posX, -dataset.stop.main],
               
             //On the Top Right Corner
-              5 : [zoomX, 0, rightStop, -stop],
+              5 : [dataset.size.zoomX, 0, dataset.stop.right, -dataset.stop.main],
               
             //On the Right Side
-              6 : [zoomX, topY, rightStop, posY],
-              
-            
+              6 : [dataset.size.zoomX, topY, dataset.stop.right, posY],
+                         
             //On the Bottom Right Corner
-              7 : [zoomX, zoomY, rightStop, bottomStop],
+              7 : [dataset.size.zoomX, dataset.size.zoomY, dataset.stop.right, dataset.stop.bottom],
               
             //On the Bottom    
-              8 : [leftX, zoomY, posX, bottomStop]
+              8 : [leftX, dataset.size.zoomY, posX, dataset.stop.bottom]
             },
             
             // Test for collisions
-            a   = -stop <= posX,
-            e2  = -stop > posX,
-            b   = -stop <= posY,
-            f   = -stop > posY,
-            d   = bottomStop > posY,
-            g   = bottomStop <= posY,
-            c   = rightStop > posX,
-            j   = rightStop <= posX,
+            a   = -dataset.stop.main <= posX,
+            e2  = -dataset.stop.main > posX,
+            b   = -dataset.stop.main <= posY,
+            f   = -dataset.stop.main > posY,
+            d   = dataset.stop.bottom > posY,
+            g   = dataset.stop.bottom <= posY,
+            c   = dataset.stop.right > posX,
+            j   = dataset.stop.right <= posX,
             
             // Results of collision
             cssArrIndex = (a && b && c && d) ? 0 : (e2) ? (b && d) ? 1 : (f) ? 2 : (g) ? 3 : null : (f) ? (c) ? 4 : 5 : (j) ? (d) ? 6 : 7 : (g) ? 8 : null,
@@ -393,6 +399,7 @@
                 .remove();
               
               style.glare(zoom);
+              utils.setParams(zoom);
               
             }).each(function () {
             
@@ -559,12 +566,15 @@
                   'touchmove': function(e){
                     e.preventDefault();
                     ele.trigger('touchmove', e.originalEvent);
-                  },'touchend': removeEvents,
-                  'taphold' : function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }
+                  },'touchend': removeEvents
+                });
 
+                //Disabling taphold
+                document.oncontextmenu = function() {return false;};
+                $(document).mousedown(function(e){
+                      if ( e.button == 2 ) 
+                          return false; 
+                      return true;
                 });
 
               
@@ -592,6 +602,8 @@
               
             },
             //Add Button if  is touch
+            touchCallToAction = 'touch',
+            magColor = '#efefef',
             icon = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" overflow="inherit" xml:space="preserve">\
                 <defs>\
                   <filter id="drop-shadow">\
@@ -600,8 +612,8 @@
                     <feBlend in="SourceGraphic" in2="the-shadow" mode="normal"/>\
                   </filter>\
                 </defs>\
-                <path filter="url(#drop-shadow)" fill="#efefef" d="M23.265,30.324l-9.887,9.887l-3.64-3.641l9.942-9.941c-2.687-4.42-2.134-10.246,1.668-14.049 c4.469-4.469,11.732-4.451,16.224,0.04c4.491,4.491,4.509,11.754,0.04,16.224C33.723,32.732,27.718,33.223,23.265,30.324z M24.601,15.833c-2.681,2.681-2.67,7.039,0.024,9.733s7.053,2.705,9.733,0.025c2.682-2.681,2.671-7.04-0.023-9.734 C31.641,13.162,27.282,13.152,24.601,15.833z"/>\
-              </svg> Touch',
+                <path filter="url(#drop-shadow)" fill="' + magColor + '" d="M23.265,30.324l-9.887,9.887l-3.64-3.641l9.942-9.941c-2.687-4.42-2.134-10.246,1.668-14.049 c4.469-4.469,11.732-4.451,16.224,0.04c4.491,4.491,4.509,11.754,0.04,16.224C33.723,32.732,27.718,33.223,23.265,30.324z M24.601,15.833c-2.681,2.681-2.67,7.039,0.024,9.733s7.053,2.705,9.733,0.025c2.682-2.681,2.671-7.04-0.023-9.734 C31.641,13.162,27.282,13.152,24.601,15.833z"/>\
+              </svg>' + touchCallToAction,
 
             button = (touch) ? ['<div class="zoomy-wrap" />', '<div class=" zoomy-btn zoomy-btn-' + i + '">' + icon + '</div>'] : ['', ''];
       

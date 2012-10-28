@@ -1,7 +1,7 @@
 var http    = require('http'),
     fs      = require('fs'),
     path    = require('path'),
-    port    = process.env.PORT || 3000;
+    port    = process.env.PORT || 3333;
  
 http.createServer(function (request, response) {
  
@@ -22,7 +22,7 @@ http.createServer(function (request, response) {
             break;
     }
      
-    path.exists(filePath, function(exists) {
+    fs.exists(filePath, function(exists) {
      
         if (exists) {
             fs.readFile(filePath, function(error, content) {
