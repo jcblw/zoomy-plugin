@@ -68,7 +68,7 @@
             id  = that.zoomy.attr('rel'),
             css = {};
                 
-          if (floats['float'] === 'none') {
+          if (floats.float === 'none') {
             parentCenter();
           }
           

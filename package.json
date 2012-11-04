@@ -1,23 +1,10 @@
 {
-  "me": "Zoomy Test Server",
-  "version": "0.0.1",
-  "author": "redeyeoperations.com <info@redeyeoperations.com>",
-  "description": "Simple Test Server for a jQuery Plugin",
-  "contributors": [ 
-    {
-      "name": "Jacob Lowe",
-      "email": "jacob@redeyeops.com"
-    } 
-    //If you would like your name on this list please enter it here :-)
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jacoblwe20/zoomy-plugin.git"
-  },
-  // "dependencies" : {
-  // },
-  "license": "MIT",
-  "engine": {
+  "name"      : "Zoomy Plugin",
+  "version"   : "1.4.6",
+  "author"    : "redeyeoperations.com <info@redeyeoperations.com>",
+  "license"   : "MIT",
+  "engine"    : {
     "node": ">=0.6"
   }
 }
+

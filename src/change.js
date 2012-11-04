@@ -105,7 +105,7 @@
           callback(that.pos);
         }
       }
-    }
+    };
 
     return _fn[method];
   };
