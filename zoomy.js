@@ -23,6 +23,7 @@
     count : [],
     pos: null
   };
+  window.ZoomyS = ZoomyS;
 
   /** @method     zoomy   Function    - Plugin for jQuery
    *  @param      event   String      - Event to initiate Zoomy
