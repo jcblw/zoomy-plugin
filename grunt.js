@@ -1,3 +1,4 @@
+
 module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
@@ -22,5 +23,11 @@ module.exports = function(grunt) {
       port : 3000,
       base : '.'
     }
+  });
+
+  grunt.registerTask('server', 'Start a custom web server.', function() {
+    var done = this.async();
+    grunt.log.writeln('Starting web server on port 3000.');
+    require('./server.js').listen(3000).on('close', done);
   });
 };

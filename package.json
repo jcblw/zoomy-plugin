@@ -1,10 +1,13 @@
 {
-  "name"      : "Zoomy Plugin",
+  "app"      : "Zoomy Plugin",
   "version"   : "1.4.6",
   "author"    : "redeyeoperations.com <info@redeyeoperations.com>",
   "license"   : "MIT",
   "engine"    : {
     "node": ">=0.6"
-  }
+  },
+  "dependencies" : {
+   "connect"  : "latest" 
+ }
 }
 
