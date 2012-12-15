@@ -44,7 +44,7 @@
       zoomStop    : null // callback for when the zoom ends
     },
       //Test for touch
-      touch = (typeof($.support.touch) === 'boolean') ? ($.support.touch) ? true : false : false,
+      touch = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) ? true : false,
       
       //Change default event on touch
       defaultEvent = (touch) ? 'touchstart' : 'click',
