@@ -15,7 +15,7 @@
 */
 
 
-(function ($) {
+(function($) {
     
   // @object ZoomyS Object - Holds alot of data for each instance of Zoomy
   'use strict';
@@ -88,9 +88,15 @@
          */
         css: function(a){
 
+          var translate = 'translate3d(' + a[2]+ 'px, ' + a[3] + 'px, 0)';
+
           return (typeof a !== 'undefined' && a.length > 0) ? {
             'backgroundPosition'  : '-' + a[0] + 'px ' + '-' + a[1] + 'px',
-            '-webkit-transform'   : 'translate3d(' + a[2]+ 'px, ' + a[3] + 'px, 0)'
+            '-webkit-transform'   : translate,
+            '-moz-transform'      : translate,
+            '-ms-tranform'        : translate,
+            '-o-tranform'         : translate,
+            'transform'           : translate
           } : {} ;
         },
         //asspect ratio
@@ -161,7 +167,7 @@
 
         possibilities : function(index, dataset, leftX, topY, posX, posY){
 
-          var _fn = {
+          var fn = {
           // In the Center       
             0 : [leftX, topY, posX, posY],
             
@@ -190,7 +196,7 @@
             8 : [leftX, dataset.size.zoomY, posX, dataset.stop.bottom]
           };
 
-          return _fn[index];
+          return fn[index];
 
         },
       
@@ -580,8 +586,9 @@
                 //Disabling taphold
                 document.oncontextmenu = function() {return false;};
                 $(document).mousedown(function(e){
-                      if ( e.button == 2 ) 
+                      if ( e.button === 2 ){
                           return false; 
+                      }
                       return true;
                 });
 
