@@ -1,13 +1,13 @@
 {
-  "app"      : "Zoomy Plugin",
-  "version"   : "1.4.6",
-  "author"    : "redeyeoperations.com <info@redeyeoperations.com>",
-  "license"   : "MIT",
-  "engine"    : {
-    "node": ">=0.6"
+  "name": "jquery-plugin",
+  "version": "1.4.6",
+  "engines": {
+    "node": ">= 0.6.0"
   },
-  "dependencies" : {
-   "connect"  : "latest" 
- }
+  "scripts": {
+    "test": "grunt qunit"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.17"
+  }
 }
-

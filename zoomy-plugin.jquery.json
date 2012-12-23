@@ -1,0 +1,29 @@
+{
+  "name": "zoomy-plugin",
+  "title": "Zoomy Plugin",
+  "description": "Make the web easier on the eyes",
+  "version": "1.4.6",
+  "homepage": "https://github.com/jacoblwe20/zoomy-plugin",
+  "author": {
+    "name": "jacoblwe20",
+    "email": "jacoblowe2.0@gmail.com",
+    "url": "http://jacoblowe.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacoblwe20/zoomy-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jacoblwe20/zoomy-plugin/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jacoblwe20/zoomy-plugin/blob/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "~1.6"
+  },
+  "keywords": []
+}

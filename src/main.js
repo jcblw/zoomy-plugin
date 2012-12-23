@@ -24,6 +24,7 @@
       this.options = options;
       this.event = event;
       this.image = ele.find('img');
+      return true;
   };
 
   Zoomy.prototype.touch = touch = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) ? true : false;
@@ -118,6 +119,8 @@
       zoom.Build('init')();
      
     });
+
+    return this;
   };
   window.Zoomy = Zoomy;
 }(jQuery));
