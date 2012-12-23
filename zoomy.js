@@ -89,9 +89,8 @@
         css: function(a){
 
           return (typeof a !== 'undefined' && a.length > 0) ? {
-            backgroundPosition  : '-' + a[0] + 'px ' + '-' + a[1] + 'px',
-            left                : a[2],
-            top                 : a[3]
+            'backgroundPosition'  : '-' + a[0] + 'px ' + '-' + a[1] + 'px',
+            '-webkit-transform'   : 'translate3d(' + a[2]+ 'px, ' + a[3] + 'px, 0)'
           } : {} ;
         },
         //asspect ratio
@@ -142,6 +141,58 @@
        * @param   zoom      Object    - The Zoomy Object to pull data from
        */
       change = {
+
+        collision : function(posX, posY, dataset){
+
+          // Test for collisions
+          var a   = -dataset.stop.main <= posX,
+            e2  = -dataset.stop.main > posX,
+            b   = -dataset.stop.main <= posY,
+            f   = -dataset.stop.main > posY,
+            d   = dataset.stop.bottom > posY,
+            g   = dataset.stop.bottom <= posY,
+            c   = dataset.stop.right > posX,
+            j   = dataset.stop.right <= posX;
+            
+            // Results of collision
+          return(a && b && c && d) ? 0 : (e2) ? (b && d) ? 1 : (f) ? 2 : (g) ? 3 : null : (f) ? (c) ? 4 : 5 : (j) ? (d) ? 6 : 7 : (g) ? 8 : null;
+
+        },
+
+        possibilities : function(index, dataset, leftX, topY, posX, posY){
+
+          var _fn = {
+          // In the Center       
+            0 : [leftX, topY, posX, posY],
+            
+          // On Left Side
+            1 : [0, topY, -dataset.stop.main, posY],
+
+          // On the Top Left Corner
+            2 : [0, 0, -dataset.stop.main, -dataset.stop.main],
+            
+          //On the Bottom Left Corner
+            3 : [0, dataset.size.zoomY, -dataset.stop.main, dataset.stop.bottom],
+            
+          // On the Top
+            4 : [leftX, 0, posX, -dataset.stop.main],
+            
+          //On the Top Right Corner
+            5 : [dataset.size.zoomX, 0, dataset.stop.right, -dataset.stop.main],
+            
+          //On the Right Side
+            6 : [dataset.size.zoomX, topY, dataset.stop.right, posY],
+                       
+          //On the Bottom Right Corner
+            7 : [dataset.size.zoomX, dataset.size.zoomY, dataset.stop.right, dataset.stop.bottom],
+            
+          //On the Bottom    
+            8 : [leftX, dataset.size.zoomY, posX, dataset.stop.bottom]
+          };
+
+          return _fn[index];
+
+        },
       
         // Move Zoom Cursor
         move : function (ele, zoom, e) {
@@ -156,57 +207,14 @@
             posY        = utils.pos.mouse(e.pageY + yOffset , l.top, dataset.size.half),
             leftX       = utils.pos.zoom(e.pageX, l.left, dataset.size.ratioX, dataset.size.half, ZoomyS[id].zoom.border),
             topY        = utils.pos.zoom(e.pageY + yOffset, l.top , dataset.size.ratioY, dataset.size.half, ZoomyS[id].zoom.border),
-            
-            // Collision Detection Possiblities
-            arrPosb = {
-            
-            // In the Center       
-              0 : [leftX, topY, posX, posY],
-              
-            // On Left Side
-              1 : [0, topY, -dataset.stop.main, posY],
 
-            // On the Top Left Corner
-              2 : [0, 0, -dataset.stop.main, -dataset.stop.main],
-              
-            //On the Bottom Left Corner
-              3 : [0, dataset.size.zoomY, -dataset.stop.main, dataset.stop.bottom],
-              
-            // On the Top
-              4 : [leftX, 0, posX, -dataset.stop.main],
-              
-            //On the Top Right Corner
-              5 : [dataset.size.zoomX, 0, dataset.stop.right, -dataset.stop.main],
-              
-            //On the Right Side
-              6 : [dataset.size.zoomX, topY, dataset.stop.right, posY],
-                         
-            //On the Bottom Right Corner
-              7 : [dataset.size.zoomX, dataset.size.zoomY, dataset.stop.right, dataset.stop.bottom],
-              
-            //On the Bottom    
-              8 : [leftX, dataset.size.zoomY, posX, dataset.stop.bottom]
-            },
-            
-            // Test for collisions
-            a   = -dataset.stop.main <= posX,
-            e2  = -dataset.stop.main > posX,
-            b   = -dataset.stop.main <= posY,
-            f   = -dataset.stop.main > posY,
-            d   = dataset.stop.bottom > posY,
-            g   = dataset.stop.bottom <= posY,
-            c   = dataset.stop.right > posX,
-            j   = dataset.stop.right <= posX,
-            
-            // Results of collision
-            cssArrIndex = (a && b && c && d) ? 0 : (e2) ? (b && d) ? 1 : (f) ? 2 : (g) ? 3 : null : (f) ? (c) ? 4 : 5 : (j) ? (d) ? 6 : 7 : (g) ? 8 : null,
-            
+            cssArrIndex = change.collision(posX, posY, dataset),   
             //Compile CSS object to move Zoomy
-            move = utils.css(arrPosb[cssArrIndex]);
+            move = utils.css(change.possibilities(cssArrIndex, dataset, leftX, topY, posX, posY));
             //Uncomment to see Index number for collision type
             //console.log(cssArrIndex)
           // And Actual Call    
-          zoom.css(move || {});
+          zoom.css(move);
   
         },
         
@@ -345,6 +353,8 @@
           zoom.css({
             height          : options.zoomSize,
             width           : options.zoomSize,
+            top             : 0,
+            left            : 0,
             'border-radius' : style.round(undefined, border[1]),
             border          : border[0]
           });
@@ -376,7 +386,7 @@
           var id = zoom.attr('rel');
 
           //Move the Zoomy out of the screen view while loading img
-          zoom.show().css({top: '-999999px', left: '-999999px'});
+          zoom.show().css({top:'-9999px', left: '-9999px'});
       
           if (zoom.find('img').attr('src') !== image) {
             zoom.find('img').attr('src', image).load(function () {
@@ -393,7 +403,10 @@
   
               zoom.append(assets)
                 .css({
-                  'background-image': 'url(' + image + ')'
+                  'background-image': 'url(' + image + ')',
+                  top: '0px',
+                  left: '0px',
+                  visibility: 'hidden'
                 })
                 .find('img')
                 .remove();
@@ -543,7 +556,6 @@
                 // Handling Events a bit differntly
                 var btn = $('.zoomy-btn-' + i),
                     wrp = btn.parent('div'),
-                    touchTimer = setTimeout(),
                     addEvents = function(e){
                       ele.bind(eventlist);
                       ele.trigger('touchstart', e.originalEvent);
@@ -554,11 +566,7 @@
                       wrp.removeClass('active');
                       ele.trigger('touchend');
                       ele.unbind(eventlist);
-                    },
-                    moving = function(){
-
                     };
-
                 // TODO setup events so that the image cannot be clicked
                     
                 btn.bind({
