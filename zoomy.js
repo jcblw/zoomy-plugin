@@ -45,6 +45,20 @@
     },
       //Test for touch
       touch = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) ? true : false,
+      cssTranforms = (function () {
+          var b = document.body || document.documentElement,
+            s = b.style,
+            p = 'transition',v;
+          if(typeof s[p] == 'string') {return true; }
+
+          // Tests for vendor specific prop
+          v = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'];
+          p = p.charAt(0).toUpperCase() + p.substr(1);
+          for(var i=0; i<v.length; i++) {
+            if(typeof s[v[i] + p] == 'string') { return true; }
+          }
+          return false;
+      }()),
       
       //Change default event on touch
       defaultEvent = (touch) ? 'touchstart' : 'click',
@@ -88,16 +102,24 @@
          */
         css: function(a){
 
-          var translate = 'translate3d(' + a[2]+ 'px, ' + a[3] + 'px, 0)';
+          if(typeof a !== 'undefined' && a.length > 0){
 
-          return (typeof a !== 'undefined' && a.length > 0) ? {
-            'backgroundPosition'  : '-' + a[0] + 'px ' + '-' + a[1] + 'px',
-            '-webkit-transform'   : translate,
-            '-moz-transform'      : translate,
-            '-ms-tranform'        : translate,
-            '-o-tranform'         : translate,
-            'transform'           : translate
-          } : {} ;
+            var translate = 'translate3d(' + a[2]+ 'px, ' + a[3] + 'px, 0)';
+            var movement  = (cssTranforms) ? {
+              '-webkit-transform'   : translate,
+              '-moz-transform'      : translate,
+              '-ms-tranform'        : translate,
+              '-o-tranform'         : translate,
+              'transform'           : translate 
+            } : {
+              'top'   : a[3] + 'px',
+              'left'  : a[2] + 'px'
+            };
+
+            return $.extend({'backgroundPosition'  : '-' + a[0] + 'px ' + '-' + a[1] + 'px'}, movement);
+          }else{
+            return {};
+          }
         },
         //asspect ratio
         ratio: function(x, y){
