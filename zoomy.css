@@ -97,23 +97,25 @@ body{
 .zoomy-btn{
     font-family: sans-serif;
     position: absolute;
-    top: 5px;
-    right: 5px;
-    border-radius: 25px;
-    height: 50px;
+    top: 50%;
+    left: 50%;
+    margin: -30px 0 0 -30px;
+    border-radius: 50%;
+    height: 60px;
+    width : 60px;
+    overflow: hidden;
     -webkit-box-shadow: 0px 1px 2px rgba(255,255,255,.8);
     box-shadow: 0px 1px 2px rgba(255,255,255,.8);
     background: rgba(0,0,0,.8);
     background-position: 0px 0px;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
-    line-height: 50px;
-    padding-right: 15px;
+    line-height: 100px;
     color: #fff;
 }
 
 .zoomy-btn svg{
-    margin: 5px;
-    float: left;
+    margin: 8px auto;
+    display: block;
 }
 
 .active .zoomy-btn svg{
