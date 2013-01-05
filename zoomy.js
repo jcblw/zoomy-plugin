@@ -582,9 +582,11 @@
               if(touch){
 
                 // Handling Events a bit differntly
+                var count = 0;
                 var btn = $('.zoomy-btn-' + i),
                     wrp = btn.parent('div'),
                     addEvents = function(e){
+                      count = 0;
                       ele.bind(eventlist);
                       ele.trigger('touchstart', e.originalEvent);
                       ele.trigger('touchmove', e.originalEvent);
@@ -600,8 +602,16 @@
                 btn.bind({
                   'touchstart': addEvents, 
                   'touchmove': function(e){
-                    e.preventDefault();
+                    var that = $(this);
+                    count += 1;
                     ele.trigger('touchmove', e.originalEvent);
+                    e.preventDefault();
+                    setTimeout(function(){
+                      if(count === 1){
+                        console.log('fix');
+                        that.trigger('touchend');
+                      }
+                    },200);
                   },'touchend': removeEvents
                 });
 
