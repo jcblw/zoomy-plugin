@@ -582,8 +582,8 @@
               if(touch){
 
                 // Handling Events a bit differntly
-                var count = 0;
-                var btn = $('.zoomy-btn-' + i),
+                var count = 0, 
+                    btn = $('.zoomy-btn-' + i),
                     wrp = btn.parent('div'),
                     addEvents = function(e){
                       count = 0;
@@ -608,7 +608,6 @@
                     e.preventDefault();
                     setTimeout(function(){
                       if(count === 1){
-                        console.log('fix');
                         that.trigger('touchend');
                       }
                     },200);
