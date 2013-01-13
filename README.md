@@ -38,4 +38,4 @@ _Larry Battle_
 
 _Chris Pearson_ [Website](http://www.upland.co.uk)
 
-Suggest Features @ [http://redeyeoperations.com/plugins/zoomy](http://redeyeoperations.com/plugins/zoomy)
+Suggest Features @ [http://zoomy.me](http://zoomy.me)
