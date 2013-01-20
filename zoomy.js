@@ -1,5 +1,5 @@
 /*
-* Zoomy 1.4.6 - jQuery plugin
+* Zoomy 2.0.0 - jQuery plugin
 * http://zoomy.me
 *
 * Copyright (c) 2012 Jacob Lowe (http://redeyeoperations.com)
