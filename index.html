@@ -33,7 +33,7 @@
 	}
 </style>
 <script src=https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js></script>
-<script src=zoomy.min.js></script>
+<script src=zoomy.js></script>
 
 <h1>Test Page</h1>
 <a href=http://2.bp.blogspot.com/-6_QwpJga3X0/TavbE8-elOI/AAAAAAAAGuE/VSzPprM22rI/s1600/best-long-exposure-photography2.jpg class=zoom ><img src=http://2.bp.blogspot.com/-6_QwpJga3X0/TavbE8-elOI/AAAAAAAAGuE/VSzPprM22rI/s1600/best-long-exposure-photography2.jpg style="float: right;" /></a>
@@ -51,6 +51,13 @@
 
 <script defer>
 	$(function(){
-		$('.zoom').zoomy({border:'6px solid #fff'});
+		$('.zoom').zoomy({
+			zoomSize: 256,
+			round: false,
+			border:'6px solid #fff',
+			fixed: true,
+			fixedX: -300,
+			fixedY: 0
+		});
 	});
 </script>
