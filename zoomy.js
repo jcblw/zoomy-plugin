@@ -42,7 +42,7 @@
       zoomInit    : null,  //callback for when zoom initializes
       zoomStart   : null, // callback for when zoom starts
       zoomStop    : null, // callback for when the zoom ends
-	  fixed       : false, // display Zoomy on a fixed position
+	    fixed       : false, // display Zoomy on a fixed position
       fixedX      : 0, // coordinates for fixed Zoomy
       fixedY      : 0
     },
@@ -315,7 +315,7 @@
             .css({
               height          : options.zoomSize / 2,
               width           : options.zoomSize - 10,
-              margin          : ($.browser.msie && parseInt($.browser.version, 10) === 9) ? 0 : '5px auto',
+              margin          : '5px auto',
               'border-radius' : style.round(0)
           });
         },
@@ -424,7 +424,7 @@
             }
 
           }).each(function () {
-            if (this.complete || ($.browser.msie && parseInt($.browser.version, 10) === 6)) {
+            if (this.complete) {
               $(this).trigger("load");
             }
           });
@@ -471,7 +471,7 @@
               
             }).each(function () {
             
-              if (this.complete || ($.browser.msie && parseInt($.browser.version, 10) === 6)) {
+              if (this.complete) {
               
                 $(this).trigger("load");
                 
@@ -728,7 +728,7 @@
         
           }).each(function () {
       
-            if (this.complete || ($.browser.msie && parseInt($.browser.version, 10) === 6)) {
+            if (this.complete) {
         
               $(this).trigger("load");
           
