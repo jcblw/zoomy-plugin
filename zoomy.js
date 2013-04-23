@@ -437,7 +437,7 @@
       build = {
       
         // Load Zoom Image
-        image : function (image, zoom) {
+        image : function (image, zoom, callback) {
           var id = zoom.attr('rel');
 
           //Move the Zoomy out of the screen view while loading img
@@ -468,6 +468,7 @@
               
               style.glare(zoom);
               utils.setParams(zoom);
+              callback();
               
             }).each(function () {
             
@@ -697,10 +698,7 @@
             .after(button[1]);
           
           //Setting the Zoom Variable towards the right zoom object
-          zoom = $('.zoom-obj-' + i);
-          
-          eventHandler();
-            
+          zoom = $('.zoom-obj-' + i);        
           
           if (initCallback !== null && typeof initCallback === 'function') {
             initCallback(ele);
@@ -709,8 +707,12 @@
           // Set basic parameters
           style.params(ele, zoom);
           
-          // Load zoom image 
-          build.image(image, zoom);
+          // Load zoom image ~ now async 
+          build.image(image, zoom, function(){
+
+            eventHandler();
+
+          });
         
         },
         
