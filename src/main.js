@@ -46,7 +46,7 @@
       /* @method  css   Function  - Compiles and Object of Css properties
        */
       css: function(a){
-        return (typeof a !== 'undefined' && a.length > 0) ? {
+        return (typeof a !== 'undefined' && 'length' in a && a.length ) ? {
           backgroundPosition  : '-' + a[0] + 'px ' + '-' + a[1] + 'px',
           left                : a[2],
           top                 : a[3]
