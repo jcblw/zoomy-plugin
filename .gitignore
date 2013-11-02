@@ -1,4 +1,5 @@
 # get rid of node modules
 node_modules/
+npm-debug.log
 #removing build files
 build/

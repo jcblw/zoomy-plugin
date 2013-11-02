@@ -49,7 +49,7 @@
         that.state = null;
         
         // Picking from the right attibute
-        var image = that.ele.attr('href');
+        var image = that.ele.attr('href'),
           initCallback = that.options.zoomInit,
           //Add Button if  is touch
           touchCallToAction = 'touch',

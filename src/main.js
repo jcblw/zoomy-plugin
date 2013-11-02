@@ -27,7 +27,7 @@
       return true;
   };
 
-  Zoomy.prototype.touch = touch = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) ? true : false;
+  var touch = Zoomy.prototype.touch = (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch ) ? true : false;
 
   Zoomy.prototype.Helpers = function(helper){
     var that = this,
