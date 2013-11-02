@@ -168,6 +168,7 @@
       
       window.setTimeout(function(){
         that.Style('params')();
+        that.Helpers('setParams')();
       }, 100);
       
     
