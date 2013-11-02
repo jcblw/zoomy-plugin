@@ -1,6 +1,6 @@
-var files = ["src/main.js", "src/change.js", "src/events.js", "src/build.js", "src/style.js"];
 /*global module:false*/
 module.exports = function(grunt) {
+  var files = ["src/main.js", "src/change.js", "src/events.js", "src/build.js", "src/style.js"];
 
   // Project configuration.
   grunt.initConfig({
@@ -42,7 +42,8 @@ module.exports = function(grunt) {
         browser: true,
         globals: {
           jQuery: true,
-          Zoomy : true
+          Zoomy : true,
+          console : true
         }
       },
       all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']

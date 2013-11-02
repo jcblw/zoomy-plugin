@@ -1,8 +1,14 @@
 {
-  "name": "jquery-plugin",
+  "name": "zoomy",
   "version": "1.4.6",
+  "description": "zoomy is a tool to magnify images",
   "engines": {
     "node": ">= 0.6.0"
+  },
+  "author" : "Jacob Lowe < ping@jacoblowe.me >",
+  "license" : "https://github.com/jacoblwe20/zoomy-plugin/LICENSE-MIT",
+  "repository" : {
+    "url" : "https://github.com/jacoblwe20/zoomy-plugin.git"
   },
   "scripts": {
     "test": "grunt qunit"

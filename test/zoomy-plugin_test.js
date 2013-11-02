@@ -41,8 +41,9 @@
   });
 
   test('Compiling CSS', function(){
-    equal(this.Zoomy.Helpers('css')(), {}, 'should be an empty object');
-    //equal(this.Zoomy.Helpers('css')([1, 2, 3, 4]), {backgroundPosition : '-1px -2px', left : 3, top : 4}, 'should be compiled css object');
+    equal(typeof this.Zoomy.Helpers('css'), 'function', 'should return a function');
+    equal(typeof this.Zoomy.Helpers('css')(), 'object', 'should be an empty object');
+    equal(this.Zoomy.Helpers('css')([1, 2, 3, 4]).backgroundPosition, '-1px -2px', 'should be compiled css object');
   });
 
 
